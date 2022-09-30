@@ -28,7 +28,6 @@ public class NGrams {
     public long getTotalNGramCount(int n) {
         return -1; // TODO: Implement this method
     }
-
     /**
      * Get the n-grams, as a List, with the i-th entry being
      * all the (i+1)-grams and their counts.

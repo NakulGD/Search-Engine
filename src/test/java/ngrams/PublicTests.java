@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PublicTests {
     @Test
-    public void test_NGrams1() {
+    public void test_NGrams1() throws Exception {
         String[] test = {"the", "the", "big", "boy"};
         List<Map<String, Long>> expectedListofMaps = new ArrayList<Map<String, Long>>();
         expectedListofMaps.add(new HashMap<String, Long>());
@@ -35,7 +35,7 @@ public class PublicTests {
     }
 
     @Test
-    public void test_NGrams2() {
+    public void test_NGrams2() throws Exception {
         String[] test = {"the", "big", "boy", "and", "the", "big", "girl", "jumped", "on", "foo"};
         List<Map<String, Long>> expectedListofMaps = new ArrayList<Map<String, Long>>();
         expectedListofMaps.add(new HashMap<String, Long>());
@@ -112,5 +112,37 @@ public class PublicTests {
 
         NGrams ngrams1 = new NGrams(test);
         assertEquals(expectedListofMaps, ngrams1.getAllNGrams());
+    }
+
+    @Test
+    public void test_TotalNGramCount1() throws Exception {
+        String[] test = {"the", "the", "big", "boy"};
+        NGrams ngrams1 = new NGrams(test);
+
+        assertEquals(9, ngrams1.getTotalNGramCount(4));
+    }
+
+    @Test
+    public void test_TotalNGramCount2() throws Exception {
+        String[] test = {"the", "the", "big", "boy"};
+        NGrams ngrams1 = new NGrams(test);
+
+        assertEquals(8, ngrams1.getTotalNGramCount(3));
+    }
+
+    @Test
+    public void test_TotalNGramCount3() throws Exception {
+        String[] test = {"the", "the", "big", "boy"};
+        NGrams ngrams1 = new NGrams(test);
+
+        assertEquals(6, ngrams1.getTotalNGramCount(2));
+    }
+
+    @Test
+    public void test_TotalNGramCount4() throws Exception {
+        String[] test = {"the", "the", "big", "boy"};
+        NGrams ngrams1 = new NGrams(test);
+
+        assertEquals(3, ngrams1.getTotalNGramCount(1));
     }
 }

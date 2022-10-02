@@ -28,8 +28,24 @@ public class NGrams {
      * @return the total number of 1-grams,
      * 2-grams, ..., n-grams
      */
-    public long getTotalNGramCount(int n) {
-        return -1; // TODO: Implement this method
+    public long getTotalNGramCount(int n) throws Exception {
+
+        int count = 0;
+
+        // First get list of possible grams
+        List<Map<String, Long>> listOfGrams = this.getAllNGrams();
+
+        //Check whether inputted n is valid
+        if(n < 1 || n > this.line.length) {
+            throw new Exception("Invalid input");
+        }
+
+        //Iterate through each entry in the list up to n
+        for(int i = 0; i < n; i++) {
+            count += listOfGrams.get(i).size();
+        }
+
+        return count;
     }
 
     /**
@@ -38,7 +54,12 @@ public class NGrams {
      * @return a list of n-grams and their associated counts,
      * with the i-th entry being all the (i+1)-grams and their counts
      */
-    public List<Map<String, Long>> getAllNGrams() {
+    public List<Map<String, Long>> getAllNGrams() throws Exception {
+
+        //Throw exception in the case of empty array
+        if(this.line.length == 0) {
+            throw new Exception("Invalid String");
+        }
 
         //Initialize List of Maps
         List<Map<String, Long>> listOfGrams = new ArrayList<Map<String, Long>>();
@@ -56,6 +77,8 @@ public class NGrams {
 
                 for (int k = j; k < j + glength; k++) {
                     current.append(this.line[k]);
+
+                    //Insert space unless last word
                     if (k != j + glength - 1) {
                         current.append(" ");
                     }

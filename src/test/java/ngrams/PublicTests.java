@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PublicTests {
     @Test
@@ -145,4 +144,13 @@ public class PublicTests {
 
         assertEquals(3, ngrams1.getTotalNGramCount(1));
     }
+
+    @Test
+    public void test_TotalNGramCount5() throws Exception {
+        String[] tester = {"the", "big", "boy", "and", "the", "big", "girl", "jumped", "over", "the", "foo"};
+
+        NGrams ngramsA = new NGrams(tester);
+        assertEquals(26, ngramsA.getTotalNGramCount(3));
+    }
+
 }

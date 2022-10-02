@@ -1,11 +1,13 @@
 package ngrams;
+
 import cpen221.mp1.ngrams.NGrams;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class PublicTests {
     @Test
@@ -153,4 +155,26 @@ public class PublicTests {
         assertEquals(26, ngramsA.getTotalNGramCount(3));
     }
 
+    @Test
+    public void test_TotalNGramCount6() {
+        String[] tester = {"the", "the", "big", "big", "girl"};
+
+        NGrams ngramsB = new NGrams(tester);
+        Exception exp = Assertions.assertThrows(Exception.class, () -> { ngramsB.getTotalNGramCount(6);});
+    }
+
+    @Test
+    public void test_TotalNGramCount7() {
+        String[] tester = {" "};
+        NGrams ngramsC = new NGrams(tester);
+        Exception exp = Assertions.assertThrows(Exception.class, () -> { ngramsC.getTotalNGramCount(6);}
+        );
+    }
+
+    @Test
+    public void test_TotalNGramCount8() {
+        String[] tester = {"abra", "cadabra"};
+        NGrams ngramsD = new NGrams(tester);
+        Exception exp = Assertions.assertThrows(Exception.class, () -> { ngramsD.getTotalNGramCount(0);});
+    }
 }

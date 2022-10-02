@@ -8,6 +8,7 @@ import java.util.Map;
 public class NGrams {
 
     String[] line;
+    String[] currentLine;
 
     /**
      * Create an NGrams object
@@ -17,6 +18,7 @@ public class NGrams {
      */
     public NGrams(String[] text) {
         this.line = text;
+        currentLine = null;
     }
 
     /**
@@ -57,59 +59,61 @@ public class NGrams {
      */
     public List<Map<String, Long>> getAllNGrams() throws Exception {
 
-        /*StringBuilder joinStr = new StringBuilder();
-
-        for(int i = 0; i < this.line.length; i++) {
-            joinStr.append(this.line[i]);
-        }
-
-        String fullStr = joinStr.toString();
-        this.line = getWords(fullStr); */
-
-        //Throw exception in the case of empty array
-        if(this.line.length == 0) {
-            throw new Exception("Invalid String");
-        }
-
         //Initialize List of Maps
         List<Map<String, Long>> listOfGrams = new ArrayList<Map<String, Long>>();
 
-        //Iterate 1 through to longest possible gram, add map to list
-        for(int glength = 1; glength <= this.line.length; glength++) {
+        //Iterate through array and turn sentences into a separate string array
+        for(int i = 0; i < line.length; i++){
+            currentLine = getWords(this.line[i]);
 
-            listOfGrams.add(new HashMap<String, Long>());
+            //Throw exception in the case of empty array
+            if(this.currentLine.length == 0) {
+                throw new Exception("Invalid String");
+            }
 
-            //Iterate through line with each word as starting word in gram
-            for(int j = 0; j <= this.line.length - glength; j++) {
+            //Iterate 1 through to longest possible gram, add map to list
 
-                //Using StringBuilder, construct current String of glength words
-                StringBuilder current = new StringBuilder();
+            for(int glength = 1; glength <= this.currentLine.length; glength++) {
 
-                for (int k = j; k < j + glength; k++) {
-                    current.append(this.line[k]);
+                listOfGrams.add(new HashMap<String, Long>());
 
-                    //Insert space unless last word
-                    if (k != j + glength - 1) {
-                        current.append(" ");
+                //Iterate through line with each word as starting word in gram
+                for(int j = 0; j <= this.currentLine.length - glength; j++) {
+
+                    //Using StringBuilder, construct current String of glength words
+                    StringBuilder current = new StringBuilder();
+
+                    for (int k = j; k < j + glength; k++) {
+                        current.append(this.currentLine[k]);
+
+                        //Insert space unless last word
+                        if (k != j + glength - 1) {
+                            current.append(" ");
+                        }
                     }
-                }
-                String currentStr = current.toString();
+                    String currentStr = current.toString();
 
-                //Check whether the current String is in the current map
-                if (listOfGrams.get(glength - 1).containsKey(currentStr)) {
-                    Long count = listOfGrams.get(glength - 1).get(currentStr);
-                    listOfGrams.get(glength - 1).put(currentStr, ++count);
-                } else {
-                    listOfGrams.get(glength - 1).put(currentStr, 1L);
+                    //Check whether the current String is in the current map
+                    if (listOfGrams.get(glength - 1).containsKey(currentStr)) {
+                        Long count = listOfGrams.get(glength - 1).get(currentStr);
+                        listOfGrams.get(glength - 1).put(currentStr, ++count);
+                    } else {
+                        listOfGrams.get(glength - 1).put(currentStr, 1L);
+                    }
                 }
             }
         }
 
+        for(int i = 0; i < listOfGrams.size(); i++){
+            if(listOfGrams.get(i).size() == 0){
+                listOfGrams.remove(i);
+            }
+        }
         return listOfGrams;
     }
 
     // Add specs for getWords method
-    /*private String[] getWords(String text) {
+    private String[] getWords(String text) {
         ArrayList<String> words = new ArrayList<>();
         BreakIterator wb = BreakIterator.getWordInstance();
         wb.setText(text);
@@ -126,5 +130,5 @@ public class NGrams {
         String[] wordsArray = new String[words.size()];
         words.toArray(wordsArray);
         return wordsArray;
-    }*/
+    }
 }

@@ -178,7 +178,7 @@ public class PublicTests {
         Exception exp = Assertions.assertThrows(Exception.class, () -> { ngramsD.getTotalNGramCount(0);});
     }
 
-    /*@Test
+    @Test
     public void simpleTestCount() throws Exception{
         String text1 = "the blue cow jumped over the blue cow moon!";
         String text2 = "The Blue Period of Picasso is the period between 1900 and 1904, when he painted essentially monochromatic paintings in shades of blue and blue-green, only occasionally warmed by other colors.";
@@ -205,5 +205,5 @@ public class PublicTests {
 
         NGrams ng = new NGrams(new String[]{text1, text2});
         assertEquals(expectedNGrams, ng.getAllNGrams());
-    } */
+    }
 }

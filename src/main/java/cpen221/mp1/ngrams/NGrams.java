@@ -1,5 +1,6 @@
 package cpen221.mp1.ngrams;
 
+import java.text.BreakIterator;
 import java.util.*;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,15 @@ public class NGrams {
      */
     public List<Map<String, Long>> getAllNGrams() throws Exception {
 
+        /*StringBuilder joinStr = new StringBuilder();
+
+        for(int i = 0; i < this.line.length; i++) {
+            joinStr.append(this.line[i]);
+        }
+
+        String fullStr = joinStr.toString();
+        this.line = getWords(fullStr); */
+
         //Throw exception in the case of empty array
         if(this.line.length == 0) {
             throw new Exception("Invalid String");
@@ -97,4 +107,24 @@ public class NGrams {
 
         return listOfGrams;
     }
+
+    // Add specs for getWords method
+    /*private String[] getWords(String text) {
+        ArrayList<String> words = new ArrayList<>();
+        BreakIterator wb = BreakIterator.getWordInstance();
+        wb.setText(text);
+        int start = wb.first();
+        for (int end = wb.next();
+             end != BreakIterator.DONE;
+             start = end, end = wb.next()) {
+            String word = text.substring(start, end).toLowerCase();
+            word = word.replaceAll("^\\s*\\p{Punct}+\\s*", "").replaceAll("\\s*\\p{Punct}+\\s*$", "");
+            if (!word.equals(" ")) {
+                words.add(word);
+            }
+        }
+        String[] wordsArray = new String[words.size()];
+        words.toArray(wordsArray);
+        return wordsArray;
+    }*/
 }

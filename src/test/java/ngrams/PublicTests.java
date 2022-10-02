@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PublicTests {
     @Test
     public void test_NGrams1() throws Exception {
-        String[] test = {"the", "the", "big", "boy"};
+        String[] test = {"The the big boy."};
         List<Map<String, Long>> expectedListofMaps = new ArrayList<Map<String, Long>>();
         expectedListofMaps.add(new HashMap<String, Long>());
         expectedListofMaps.get(0).put("the", 2L);
@@ -36,7 +36,7 @@ public class PublicTests {
 
     @Test
     public void test_NGrams2() throws Exception {
-        String[] test = {"the", "big", "boy", "and", "the", "big", "girl", "jumped", "on", "foo"};
+        String[] test = {"The big boy and the big girl jumped on foo."};
         List<Map<String, Long>> expectedListofMaps = new ArrayList<Map<String, Long>>();
         expectedListofMaps.add(new HashMap<String, Long>());
         expectedListofMaps.get(0).put("the", 2L);
@@ -116,7 +116,7 @@ public class PublicTests {
 
     @Test
     public void test_TotalNGramCount1() throws Exception {
-        String[] test = {"the", "the", "big", "boy"};
+        String[] test = {"The the big boy."};
         NGrams ngrams1 = new NGrams(test);
 
         assertEquals(9, ngrams1.getTotalNGramCount(4));
@@ -124,7 +124,7 @@ public class PublicTests {
 
     @Test
     public void test_TotalNGramCount2() throws Exception {
-        String[] test = {"the", "the", "big", "boy"};
+        String[] test = {"The the big boy."};
         NGrams ngrams1 = new NGrams(test);
 
         assertEquals(8, ngrams1.getTotalNGramCount(3));
@@ -132,7 +132,7 @@ public class PublicTests {
 
     @Test
     public void test_TotalNGramCount3() throws Exception {
-        String[] test = {"the", "the", "big", "boy"};
+        String[] test = {"The the big boy."};
         NGrams ngrams1 = new NGrams(test);
 
         assertEquals(6, ngrams1.getTotalNGramCount(2));
@@ -140,9 +140,58 @@ public class PublicTests {
 
     @Test
     public void test_TotalNGramCount4() throws Exception {
-        String[] test = {"the", "the", "big", "boy"};
+        String[] test = {"The the big boy."};
         NGrams ngrams1 = new NGrams(test);
 
         assertEquals(3, ngrams1.getTotalNGramCount(1));
+    }
+
+    @Test
+    public void test_TotalNGramCount5() throws Exception {
+        String sentence1 = "Test sentence.";
+        String sentence2 = "Also test.";
+        String[] test = {sentence1, sentence2};
+        NGrams ngrams1 = new NGrams(test);
+
+        List<Map<String, Long>> expectedListofMaps = new ArrayList<Map<String, Long>>();
+        expectedListofMaps.add(new HashMap<String, Long>());
+        expectedListofMaps.get(0).put("test", 2L);
+        expectedListofMaps.get(0).put("sentence", 1L);
+        expectedListofMaps.get(0).put("also", 1L);
+
+        expectedListofMaps.add(new HashMap<String, Long>());
+        expectedListofMaps.get(1).put("test sentence", 1L);
+        expectedListofMaps.get(1).put("also test", 1L);
+
+        assertEquals(expectedListofMaps, ngrams1.getAllNGrams());
+    }
+
+    @Test
+    public void simpleTestCount() throws Exception {
+        String text1 = "the blue cow jumped over the blue cow moon!";
+        String text2 = "The Blue Period of Picasso is the period between 1900 and 1904, when he painted essentially monochromatic paintings in shades of blue and blue-green, only occasionally warmed by other colors.";
+
+        long expectedCount = 130;
+
+        NGrams ng = new NGrams(new String[]{text1, text2});
+
+        assertEquals(expectedCount, ng.getTotalNGramCount(4));
+    }
+
+    @Test
+    public void simpleTestGetNGrams() throws Exception {
+        String text1 = "great class";
+        String text2 = "good textbook written by him";
+
+        List<Map<String, Long>> expectedNGrams = List.of(
+                Map.of("great", 1L, "class", 1L, "good", 1L, "textbook", 1L, "written", 1L, "by", 1L, "him", 1L),
+                Map.of("great class", 1L, "good textbook", 1L, "textbook written", 1L, "written by", 1L, "by him", 1L),
+                Map.of("good textbook written", 1L, "textbook written by", 1L, "written by him", 1L),
+                Map.of("good textbook written by", 1L, "textbook written by him", 1L),
+                Map.of("good textbook written by him", 1L)
+        );
+
+        NGrams ng = new NGrams(new String[]{text1, text2});
+        assertEquals(expectedNGrams, ng.getAllNGrams());
     }
 }

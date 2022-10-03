@@ -195,3 +195,4 @@ public class PublicTests {
         assertEquals(expectedNGrams, ng.getAllNGrams());
     }
 }
+

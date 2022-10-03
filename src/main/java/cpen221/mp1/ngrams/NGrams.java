@@ -10,6 +10,7 @@ public class NGrams {
     String[] line;
     String[] currentLine;
 
+
     /**
      * Create an NGrams object
      *
@@ -38,8 +39,9 @@ public class NGrams {
         // First get list of possible grams
         List<Map<String, Long>> listOfGrams = this.getAllNGrams();
 
+
         //Check whether inputted n is valid
-        if(n < 1 || n > this.line.length) {
+        if(n < 1 || n > listOfGrams.size()) {
             throw new Exception("Invalid input");
         }
 
@@ -126,6 +128,12 @@ public class NGrams {
             word = word.replaceAll("^\\s*\\p{Punct}+\\s*", "").replaceAll("\\s*\\p{Punct}+\\s*$", "");
             if (!word.equals(" ")) {
                 words.add(word);
+            }
+        }
+        for (int i = 0; i < words.size(); i++) {
+            if(words.get(i) == "") {
+                words.remove(i);
+                i--;
             }
         }
         String[] wordsArray = new String[words.size()];

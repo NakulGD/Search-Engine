@@ -207,3 +207,4 @@ public class PublicTests {
         assertTrue(analyzer.containsGram(testLine, "the"));
     }
 }
+

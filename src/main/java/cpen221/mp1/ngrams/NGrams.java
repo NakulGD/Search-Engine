@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class NGrams {
 
-    String[] sentencesArray;
-    String[] currentSentence;
+    String[] line;
+    String[] currentLine;
 
     /**
      * Create an NGrams object
@@ -17,8 +17,9 @@ public class NGrams {
      *             is not null and is not empty.
      */
     public NGrams(String[] text) {
-        this.sentencesArray = text;
-        currentSentence = null;
+
+        this.line = text;
+        currentLine = null;
     }
 
     /**
@@ -39,9 +40,9 @@ public class NGrams {
         List<Map<String, Long>> listOfGrams = this.getAllNGrams();
 
         //Check whether inputted n is valid
-        //if(n < 1 || n > this.line.length) {
-            //throw new Exception("Invalid input");
-        //}
+        if(n < 1 || n > listOfGrams.size()) {
+            throw new Exception("Invalid input");
+        }
 
         //Iterate through each entry in the list up to n
         for(int i = 0; i < n; i++) {
@@ -63,35 +64,32 @@ public class NGrams {
         List<Map<String, Long>> listOfGrams = new ArrayList<Map<String, Long>>();
 
         //Iterate through array and turn sentences into a separate string array
-        for(int i = 0; i < sentencesArray.length; i++){
-            currentSentence = getWords(this.sentencesArray[i]);
-            ArrayList<String> currentSentenceClean = new ArrayList<String>();
 
-            //Get rid of all empty Strings in the current sentence
-            for(int word = 0; word < currentSentence.length; word++) {
-                if(currentSentence[word] != "") {
-                    currentSentenceClean.add(currentSentence[word]);
-                }
-            }
+        for(int i = 0; i < line.length; i++){
+            currentLine = getWords(this.line[i]);
 
             //Throw exception in the case of empty array
-            if(currentSentenceClean.size() == 0) {
+            if(this.currentLine.length == 0) {
+            
                 throw new Exception("Invalid String");
             }
 
             //Iterate 1 through to longest possible gram, add map to list
-            for(int glength = 1; glength <= currentSentenceClean.size(); glength++) {
+
+            for(int glength = 1; glength <= this.currentLine.length; glength++) {
 
                 listOfGrams.add(new HashMap<String, Long>());
 
                 //Iterate through line with each word as starting word in gram
-                for(int j = 0; j <= currentSentenceClean.size() - glength; j++) {
+
+                for(int j = 0; j <= this.currentLine.length - glength; j++) {
 
                     //Using StringBuilder, construct current String of glength words
                     StringBuilder current = new StringBuilder();
 
                     for (int k = j; k < j + glength; k++) {
-                        current.append(currentSentenceClean.get(k));
+
+                        current.append(this.currentLine[k]);
 
                         //Insert space unless last word
                         if (k != j + glength - 1) {
@@ -135,6 +133,14 @@ public class NGrams {
                 words.add(word);
             }
         }
+        
+        for (int i = 0; i < words.size(); i++) {
+            if(words.get(i) == "") {
+                words.remove(i);
+                i--;
+            }
+        }
+
         String[] wordsArray = new String[words.size()];
         words.toArray(wordsArray);
         return wordsArray;

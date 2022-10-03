@@ -121,7 +121,7 @@ public class NGrams {
     }
 
     // Add specs for getWords method
-    private String[] getWords(String text) {
+    public String[] getWords(String text) {
         ArrayList<String> words = new ArrayList<>();
         BreakIterator wb = BreakIterator.getWordInstance();
         wb.setText(text);

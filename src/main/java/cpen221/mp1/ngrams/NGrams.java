@@ -42,6 +42,7 @@ public class NGrams {
 
         //Check whether inputted n is valid
         if(n < 1 || n > listOfGrams.size()) {
+
             throw new Exception("Invalid input");
         }
 
@@ -109,6 +110,7 @@ public class NGrams {
         for(int i = 0; i < listOfGrams.size(); i++){
             if(listOfGrams.get(i).size() == 0){
                 listOfGrams.remove(i);
+
                 i--;
             }
         }
@@ -130,6 +132,7 @@ public class NGrams {
                 words.add(word);
             }
         }
+
         for (int i = 0; i < words.size(); i++) {
             if(words.get(i).equals("")) { //Ask why Anu's laptop didn't pass tests when == instead of .equals()
                 words.remove(i);

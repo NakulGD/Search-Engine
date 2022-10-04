@@ -1,4 +1,5 @@
 package ngrams;
+
 import cpen221.mp1.ngrams.NGrams;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ public class PublicTests {
     @Test
     public void test_NGrams1() throws Exception {
         String[] test = {"The the big boy."};
+
         List<Map<String, Long>> expectedListofMaps = new ArrayList<Map<String, Long>>();
         expectedListofMaps.add(new HashMap<String, Long>());
         expectedListofMaps.get(0).put("the", 2L);
@@ -35,7 +37,9 @@ public class PublicTests {
 
     @Test
     public void test_NGrams2() throws Exception {
+
         String[] test = {"The big boy and the big girl jumped on foo."};
+
         List<Map<String, Long>> expectedListofMaps = new ArrayList<Map<String, Long>>();
         expectedListofMaps.add(new HashMap<String, Long>());
         expectedListofMaps.get(0).put("the", 2L);
@@ -115,7 +119,9 @@ public class PublicTests {
 
     @Test
     public void test_TotalNGramCount1() throws Exception {
+
         String[] test = {"The the big boy."};
+
         NGrams ngrams1 = new NGrams(test);
 
         assertEquals(9, ngrams1.getTotalNGramCount(4));
@@ -123,7 +129,9 @@ public class PublicTests {
 
     @Test
     public void test_TotalNGramCount2() throws Exception {
+
         String[] test = {"The the big boy."};
+
         NGrams ngrams1 = new NGrams(test);
 
         assertEquals(8, ngrams1.getTotalNGramCount(3));
@@ -131,7 +139,9 @@ public class PublicTests {
 
     @Test
     public void test_TotalNGramCount3() throws Exception {
+
         String[] test = {"The the big boy."};
+
         NGrams ngrams1 = new NGrams(test);
 
         assertEquals(6, ngrams1.getTotalNGramCount(2));
@@ -139,7 +149,9 @@ public class PublicTests {
 
     @Test
     public void test_TotalNGramCount4() throws Exception {
+
         String[] test = {"The the big boy."};
+
         NGrams ngrams1 = new NGrams(test);
 
         assertEquals(3, ngrams1.getTotalNGramCount(1));
@@ -147,6 +159,7 @@ public class PublicTests {
 
     @Test
     public void test_TotalNGramCount5() throws Exception {
+
         String sentence1 = "Test sentence.";
         String sentence2 = "Also test.";
         String[] test = {sentence1, sentence2};
@@ -167,6 +180,7 @@ public class PublicTests {
 
     @Test
     public void simpleTestCount() throws Exception {
+
         String text1 = "the blue cow jumped over the blue cow moon!";
         String text2 = "The Blue Period of Picasso is the period between 1900 and 1904, when he painted essentially monochromatic paintings in shades of blue and blue-green, only occasionally warmed by other colors.";
 

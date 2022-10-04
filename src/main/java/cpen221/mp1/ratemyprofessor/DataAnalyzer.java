@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.*;
 
 public class DataAnalyzer {
+
+    DataWrapper dw;
+
     /**
      * Create an object to analyze a RateMyProfessor dataset
      * @param dataSourceFileName the name of the file that contains the data
@@ -16,7 +19,21 @@ public class DataAnalyzer {
      */
     public DataAnalyzer(String dataSourceFileName) throws FileNotFoundException {
         DataWrapper dw = new DataWrapper(dataSourceFileName);
-        // TODO: Implement the rest of this method as appropriate
+
+        //Initialize String List, each line is its own entry
+        List<String> stringList = new ArrayList<String>();
+        String nextLine = dw.nextLine();
+
+        while(nextLine != null) {
+            stringList.add(nextLine);
+        }
+
+        //Copy List to an array
+        String[] stringArr = new String[stringList.size()];
+
+        for(int i = 0; i < stringList.size(); i++) {
+            stringArr[i] = stringList.get(i);
+        }
     }
 
     /**
@@ -31,7 +48,16 @@ public class DataAnalyzer {
      * men-high (MH), and women-high (WH)
      */
     public Map<String, Long> getHistogram(String query) {
-        return null; // TODO: Implement this method
+
+        Map<String, Long> histogram = new HashMap<String, Long>();
+        String nextLine = dw.nextLine();
+
+        //Iterate through each line of the file
+//        while(nextLine != null) {
+//            if(nextLine.)
+//        }
+//
+        return null;
     }
 
     /**

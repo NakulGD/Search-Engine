@@ -197,14 +197,23 @@ public class PublicTests {
         assertEquals(expectedNGrams, ng.getAllNGrams());
     }
 
-    @Test
-    public void testOpenFile() throws Exception {
-        String fileName = "data/test_data.txt";
-        String[] testLine = {"the big boy"};
+//    @Test
+//    public void testSearchForNGramInLine1() throws Exception {
+//        String fileName = "data/test_data.txt";
+//        String[] testLine = {"the big boy"};
+//
+//        DataAnalyzer analyzer = new DataAnalyzer(fileName);
+//
+//        assertTrue(analyzer.containsGram(testLine, "the"));
+//    }
 
-        DataAnalyzer analyzer = new DataAnalyzer(fileName);
-
-        assertTrue(analyzer.containsGram(testLine, "the"));
-    }
+//    @Test
+//    public void testStringList() throws Exception {
+//        String fileName = "data/test_data.txt";
+//
+//        DataAnalyzer analyzer = new DataAnalyzer(fileName);
+//
+//        assertTrue(analyzer.containsGram(testLine, "the"));
+//    }
 }
 

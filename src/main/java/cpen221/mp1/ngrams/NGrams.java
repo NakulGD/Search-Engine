@@ -131,7 +131,7 @@ public class NGrams {
             }
         }
         for (int i = 0; i < words.size(); i++) {
-            if(words.get(i) == "") {
+            if(words.get(i).equals("")) { //Ask why Anu's laptop didn't pass tests when == instead of .equals()
                 words.remove(i);
                 i--;
             }

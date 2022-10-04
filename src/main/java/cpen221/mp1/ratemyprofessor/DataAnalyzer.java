@@ -1,7 +1,6 @@
 package cpen221.mp1.ratemyprofessor;
 
 import cpen221.mp1.datawrapper.DataWrapper;
-import cpen221.mp1.ngrams.NGrams;
 
 import java.io.FileNotFoundException;
 import java.text.BreakIterator;
@@ -80,7 +79,7 @@ public class DataAnalyzer {
                 //If the histogram has a category for the gender and rating, add one to its count
                 if(histogram.containsKey(gender + highMediumLow)) {
                     long count = histogram.get(gender + highMediumLow);
-                    histogram.put(gender + highMediumLow, ++count);
+                    histogram.put(gender + highMediumLow, count += numOccurences(currentLine, query));
                 }
             }
         }
@@ -151,6 +150,40 @@ public class DataAnalyzer {
         String[] lineArray = getWords(line);
         double rating = Double.parseDouble(lineArray[0]);
         return rating;
+    }
+
+    /**
+     * Searches current line for occurrence of given NGram
+     *
+     * @param line, the current line being searched through
+     * @param gram, the gram being searched for
+     * @return number of occurences of the gram in the line
+     */
+    public long numOccurences(String line, String gram) throws Exception {
+
+        String[] lineArray = getWords(line);
+        String[] gramArray = getWords(gram);
+        int count = 0;
+        long total = 0;
+
+        //Error if gram length is longer than line length
+        if(gramArray.length > lineArray.length) {
+            throw new Exception("Invalid input");
+        }
+
+        //Iterate through line to find matching terms of length equal to gram length
+        for(int i = 0; i < lineArray.length - gramArray.length; i++) {
+            count = 0;
+            for(int j = 0; j < gramArray.length; j++) {
+                if(lineArray[i + j].equals(gramArray[j])) {
+                    count++;
+                }
+            }
+            if(count == gramArray.length) {
+                total++;
+            }
+        }
+        return total;
     }
 
     // Add specs for getWords method

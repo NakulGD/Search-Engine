@@ -62,7 +62,7 @@ public class DataAnalyzer {
         //Iterate through each line, checking whether it contains the search query
         for(int i = 0; i < this.stringList.size(); i++) {
             String currentLine = this.stringList.get(i);
-            if(containsGram(currentLine, query)) {
+            if(numOccurences(currentLine, query) > 0) {
                 gender = getGender(currentLine);
                 rating = getRating(currentLine);
 
@@ -97,38 +97,6 @@ public class DataAnalyzer {
         // TODO: This is an optional component but is
         //  instructive in that graphing may not be that hard!
         //  See the histogram package.
-    }
-
-    /**
-     * Searches current line for occurrence of given NGram
-     * @param line, the current line being searched through
-     * @param gram, the gram being searched for
-     * @return true or false based on whether the gram is in the current line
-     */
-    public boolean containsGram(String line, String gram) throws Exception {
-
-        String[] lineArray = getWords(line);
-        String[] gramArray = getWords(gram);
-        int count = 0;
-
-        //Error if gram length is longer than line length
-        if(gramArray.length > lineArray.length) {
-            throw new Exception("Invalid input");
-        }
-
-        //Iterate through line to find matching terms of length equal to gram length
-        for(int i = 0; i < lineArray.length - gramArray.length; i++) {
-            count = 0;
-            for(int j = 0; j < gramArray.length; j++) {
-                if(lineArray[i + j].equals(gramArray[j])) {
-                    count++;
-                }
-            }
-            if(count == gramArray.length) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

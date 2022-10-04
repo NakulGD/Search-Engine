@@ -215,7 +215,7 @@ public class PublicTests {
 
         DataAnalyzer analyzer = new DataAnalyzer(fileName);
 
-        assertTrue(analyzer.containsGram(analyzer.stringList.get(0), "jans is great"));
+        assertEquals(analyzer.numOccurences(analyzer.stringList.get(0), "jans is great"), 1);
     }
 
     @Test
@@ -235,7 +235,7 @@ public class PublicTests {
 
         assertEquals(analyzer.getRating(analyzer.stringList.get(0)), 5.0);
     }
-    
+
 
 //    @Test
 //    public void testStringList() throws Exception {

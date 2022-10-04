@@ -197,15 +197,45 @@ public class PublicTests {
         assertEquals(expectedNGrams, ng.getAllNGrams());
     }
 
-//    @Test
-//    public void testSearchForNGramInLine1() throws Exception {
-//        String fileName = "data/test_data.txt";
-//        String[] testLine = {"the big boy"};
-//
-//        DataAnalyzer analyzer = new DataAnalyzer(fileName);
-//
-//        assertTrue(analyzer.containsGram(testLine, "the"));
-//    }
+    @Test
+    public void testReadFile() throws FileNotFoundException {
+        List<String> testList = new ArrayList<String>();
+        testList.add("5.0,W,jans is great she is a fantastic teacher and her class was both interesting and lively she does expect you to read a lot out of the book and other sources as well she is a very lively teacher and you can tell she loves the subject she teaches");
+        testList.add("1.0,M,this teacher will not inspire you to be a better programmer he takes pride in deducting as many points as possible do you want to get on an assignment because you forgot to comment the number and use correct naming conventions even though your program runs this professor is for you");
+        testList.add("2.0,W,i took her for research methods and had to drop her class half way nice lady but veryyyyy tough grader and gives you an f even if you do the work i had fs even though i did my work and gave everything on time usually gives assignments and the final research project the lectures are pretty long overall i do not reccomend");
+
+        DataAnalyzer analyzer = new DataAnalyzer("data/test_data.txt");
+
+        assertEquals(testList, analyzer.stringList);
+    }
+
+    @Test
+    public void testSearchForNGramInLine1() throws Exception {
+        String fileName = "data/test_data.txt";
+
+        DataAnalyzer analyzer = new DataAnalyzer(fileName);
+
+        assertTrue(analyzer.containsGram(analyzer.stringList.get(0), "jans is great"));
+    }
+
+    @Test
+    public void testGetGender1() throws Exception {
+        String fileName = "data/test_data.txt";
+
+        DataAnalyzer analyzer = new DataAnalyzer(fileName);
+
+        assertEquals(analyzer.getGender(analyzer.stringList.get(0)), "w");
+    }
+
+    @Test
+    public void testGetScore1() throws Exception {
+        String fileName = "data/test_data.txt";
+
+        DataAnalyzer analyzer = new DataAnalyzer(fileName);
+
+        assertEquals(analyzer.getRating(analyzer.stringList.get(0)), 5.0);
+    }
+    
 
 //    @Test
 //    public void testStringList() throws Exception {

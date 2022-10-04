@@ -135,7 +135,7 @@ public class NGrams {
         }
         
         for (int i = 0; i < words.size(); i++) {
-            if(words.get(i) == "") {
+            if(words.get(i).equals("")) {
                 words.remove(i);
                 i--;
             }

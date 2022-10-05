@@ -1,5 +1,6 @@
 package cpen221.mp1.ngrams;
 
+import java.io.FileNotFoundException;
 import java.text.BreakIterator;
 import java.util.*;
 import java.util.List;
@@ -118,8 +119,13 @@ public class NGrams {
         return listOfGrams;
     }
 
-    // Add specs for getWords method
-    private String[] getWords(String text) {
+
+    /**
+     * Obtain a String[] array where indices are individual words of input String with punctuation and spaces removed
+     * @param text which is a line of text
+     * @return a String[] array where indices are individual words of input String with punctuation and spaces removed
+     */
+    public String[] getWords(String text) {
         ArrayList<String> words = new ArrayList<>();
         BreakIterator wb = BreakIterator.getWordInstance();
         wb.setText(text);
@@ -135,7 +141,7 @@ public class NGrams {
         }
         
         for (int i = 0; i < words.size(); i++) {
-            if(words.get(i) == "") {
+            if(words.get(i).equals(" ")) {
                 words.remove(i);
                 i--;
             }

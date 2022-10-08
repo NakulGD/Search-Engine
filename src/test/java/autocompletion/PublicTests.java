@@ -18,6 +18,7 @@ public class PublicTests {
     @BeforeAll
     public static void setupTests() {
         cityAnalyzer = new DataAnalyzer(citiesData);
+        SearchTerm[] test = cityAnalyzer.getSearchTerms();
         ac = new AutoCompletor(cityAnalyzer.getSearchTerms());
     }
 

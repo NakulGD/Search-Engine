@@ -1,9 +1,12 @@
 package cpen221.mp1.ratemyprofessor;
 
 import cpen221.mp1.datawrapper.DataWrapper;
+import cpen221.mp1.ngrams.NGrams;
 
 import java.io.FileNotFoundException;
+import java.text.BreakIterator;
 import java.util.Map;
+import java.util.*;
 
 public class DataAnalyzer {
     /**
@@ -43,4 +46,42 @@ public class DataAnalyzer {
         //  See the histogram package.
     }
 
+    /**
+     * Searches current line for occurrence of given NGram
+     * @param line, the current line being searched through
+     * @param gram, the gram being searched for
+     * @return true or false based on whether the gram is in the current line
+     */
+    public boolean containsGram(String[] line, String gram) throws Exception {
+        NGrams currentLine = new NGrams(line);
+        String[] gramWords = getWords(gram);
+
+        //Save all possible NGrams for the line
+        List<Map<String, Long>> possibleGrams = currentLine.getAllNGrams();
+
+        if(possibleGrams.get(gramWords.length - 1).containsKey(gram)) {
+            return true;
+        }
+        return false;
+    }
+
+    // Add specs for getWords method
+    public String[] getWords(String text) {
+        ArrayList<String> words = new ArrayList<>();
+        BreakIterator wb = BreakIterator.getWordInstance();
+        wb.setText(text);
+        int start = wb.first();
+        for (int end = wb.next();
+             end != BreakIterator.DONE;
+             start = end, end = wb.next()) {
+            String word = text.substring(start, end).toLowerCase();
+            word = word.replaceAll("^\\s*\\p{Punct}+\\s*", "").replaceAll("\\s*\\p{Punct}+\\s*$", "");
+            if (!word.equals(" ")) {
+                words.add(word);
+            }
+        }
+        String[] wordsArray = new String[words.size()];
+        words.toArray(wordsArray);
+        return wordsArray;
+    }
 }

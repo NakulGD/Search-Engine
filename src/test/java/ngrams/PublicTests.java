@@ -1,9 +1,11 @@
 package ngrams;
 
 import cpen221.mp1.ngrams.NGrams;
+import cpen221.mp1.ratemyprofessor.DataAnalyzer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -12,6 +14,7 @@ public class PublicTests {
     @Test
     public void test_NGrams1() throws Exception {
         String[] test = {"The the big boy."};
+
 
         List<Map<String, Long>> expectedListofMaps = new ArrayList<Map<String, Long>>();
         expectedListofMaps.add(new HashMap<String, Long>());
@@ -207,4 +210,17 @@ public class PublicTests {
         NGrams ng = new NGrams(new String[]{text1, text2});
         assertEquals(expectedNGrams, ng.getAllNGrams());
     }
+
+    @Test
+    public void testOpenFile() throws Exception {
+        String fileName = "data/test_data.txt";
+        String[] testLine = {"the big boy"};
+
+        DataAnalyzer analyzer = new DataAnalyzer(fileName);
+
+        assertTrue(analyzer.containsGram(testLine, "the"));
+    }
 }
+
+
+

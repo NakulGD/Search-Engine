@@ -62,5 +62,4 @@ public class Task2SmokeTests {
         );
         assertEquals(expected, da2.getHistogram(query));
     }
-
 }

@@ -118,7 +118,11 @@ public class NGrams {
         return listOfGrams;
     }
 
-    // Add specs for getWords method
+    /**
+     * Take a text input and remove punctuation
+     * @return an array list of individuals words from
+     * the text input
+     */
     public String[] getWords(String text) {
         ArrayList<String> words = new ArrayList<>();
         BreakIterator wb = BreakIterator.getWordInstance();

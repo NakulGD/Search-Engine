@@ -79,7 +79,7 @@ public class DataAnalyzer {
                 //If the histogram has a category for the gender and rating, add one to its count
                 if(histogram.containsKey(gender + highMediumLow)) {
                     long count = histogram.get(gender + highMediumLow);
-                    histogram.put(gender + highMediumLow, count += numOccurences(currentLine, query));
+                    histogram.put(gender + highMediumLow, count += numOccurrences(currentLine, query));
                 }
             }
         }
@@ -154,12 +154,11 @@ public class DataAnalyzer {
 
     /**
      * Searches current line for occurrence of given NGram
-     *
      * @param line, the current line being searched through
      * @param gram, the gram being searched for
-     * @return number of occurences of the gram in the line
+     * @return number of occurrences of the gram in the line
      */
-    public long numOccurences(String line, String gram) throws Exception {
+    public long numOccurrences(String line, String gram) throws Exception {
 
         String[] lineArray = getWords(line);
         String[] gramArray = getWords(gram);
@@ -186,7 +185,11 @@ public class DataAnalyzer {
         return total;
     }
 
-    // Add specs for getWords method
+    /**
+     * Take a text input and remove punctuation
+     * @return an array list of individuals words from
+     * the text input
+     */
     public String[] getWords(String text) {
         ArrayList<String> words = new ArrayList<>();
         BreakIterator wb = BreakIterator.getWordInstance();

@@ -40,6 +40,7 @@ package cpen221.mp1.autocompletion.gui;
 import cpen221.mp1.autocompletion.AutoCompletor;
 import cpen221.mp1.searchterm.SearchTerm;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
@@ -60,7 +61,6 @@ import java.awt.event.FocusListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.SwingUtilities;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JComponent;
@@ -99,10 +99,10 @@ public class AutoCompletorGUI extends JFrame {
 
     /**
      * Initializes the GUI, and the associated AutoCompletor object
-     * @param filename the file to read all the autocomplete data from
+     * @param searchTerms the terms that will be used to autocomplete a query
      * @param k the maximum number of suggestions to return
      */
-    public AutoCompletorGUI(String filename, int k) {
+    public AutoCompletorGUI(SearchTerm[] searchTerms, int k) {
         this.k = k;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("AutoCompletor GUI");
@@ -115,56 +115,56 @@ public class AutoCompletorGUI extends JFrame {
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
-        final AutoCompletorPanel ap = new AutoCompletorPanel(filename);
+        final AutoCompletorPanel ap = new AutoCompletorPanel(searchTerms);
 
         JLabel textLabel = new JLabel("Search query:");
 
         // Create and add a listener to the Search button
         JButton searchButton = new JButton("Search Google");
         searchButton.addActionListener(
-            new ActionListener() {
-                public void actionPerformed(ActionEvent ae) {
-                    searchOnline(ap.getSelectedText());
-                }
-            });
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent ae) {
+                        searchOnline(ap.getSelectedText());
+                    }
+                });
 
         // Create and add a listener to a "Show weights" checkbox
         JCheckBox checkbox = new JCheckBox("Show weights", null, displayWeights);
         checkbox.addActionListener(
-            new ActionListener() {
-                public void actionPerformed(ActionEvent ae) {
-                    displayWeights = !displayWeights;
-                    ap.update();
-                }
-            });
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent ae) {
+                        displayWeights = !displayWeights;
+                        ap.update();
+                    }
+                });
 
         // Define the layout of the window
         layout.setHorizontalGroup(
-            layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(
-                        GroupLayout.Alignment.TRAILING)
-                    .addComponent(textLabel, GroupLayout.PREFERRED_SIZE,
-                        GroupLayout.DEFAULT_SIZE,
-                        GroupLayout.PREFERRED_SIZE)
-                    .addComponent(checkbox, GroupLayout.PREFERRED_SIZE,
-                        GroupLayout.DEFAULT_SIZE,
-                        GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
-                    GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
-                .addComponent(ap, 0, GroupLayout.DEFAULT_SIZE, DEF_WIDTH)
-                .addComponent(searchButton, GroupLayout.PREFERRED_SIZE,
-                    GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
+                layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(
+                                        GroupLayout.Alignment.TRAILING)
+                                .addComponent(textLabel, GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addComponent(checkbox, GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED,
+                                GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
+                        .addComponent(ap, 0, GroupLayout.DEFAULT_SIZE, DEF_WIDTH)
+                        .addComponent(searchButton, GroupLayout.PREFERRED_SIZE,
+                                GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
         );
 
         layout.setVerticalGroup(
-            layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(
-                        GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(textLabel)
-                        .addComponent(checkbox))
-                    .addComponent(ap)
-                    .addComponent(searchButton))
+                layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(
+                                        GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addComponent(textLabel)
+                                        .addComponent(checkbox))
+                                .addComponent(ap)
+                                .addComponent(searchButton))
         );
     }
 
@@ -204,51 +204,18 @@ public class AutoCompletorGUI extends JFrame {
 
         // an example of one of the longest strings in the database
         private final String suggListLen =
-            "<b>Harry Potter and the Deathly Hallows: Part 1 (2010)</b>";
+                "<b>Harry Potter and the Deathly Hallows: Part 1 (2010)</b>";
 
         /**
          * Creates the AutoCompletor object and the search bar and suggestion
          * drop-down portions of the GUI
-         * @param filename the file the AutoCompletor object is constructed from
+         * @param searchTerms the terms that will be used for autocompleting a query
          */
-        public AutoCompletorPanel(String filename) {
+        public AutoCompletorPanel(SearchTerm[] searchTerms) {
             super();
 
-            // Read in the data
-            SearchTerm[] terms = null;
-            try {
-                In in = new In(filename);
-                String line0 = in.readLine();
-                if (line0 == null) {
-                    System.err.println("Could not read line 0 of " + filename);
-                    System.exit(1);
-                }
-                int n = Integer.parseInt(line0);
-                terms = new SearchTerm[n];
-                for (int i = 0; i < n; i++) {
-                    String line = in.readLine();
-                    if (line == null) {
-                        System.err.println("Could not read line " + (i+1) + " of " + filename);
-                        System.exit(1);
-                    }
-                    int tab = line.indexOf('\t');
-                    if (tab == -1) {
-                        System.err.println("No tab character in line " + (i+1) + " of " + filename);
-                        System.exit(1);
-                    }
-                    long weight = Long.parseLong(line.substring(0, tab).trim());
-                    String query = line.substring(tab + 1);
-                    terms[i] = new SearchTerm(query, weight);
-                }
-            }
-            catch (Exception e) {
-                System.err.println("Could not read or parse input file " + filename);
-                e.printStackTrace();
-                System.exit(1);
-            }
-
             // Create the autocomplete object
-            auto = new AutoCompletor(terms);
+            auto = new AutoCompletor(searchTerms);
 
             GroupLayout layout = new GroupLayout(this);
             this.setLayout(layout);
@@ -256,27 +223,27 @@ public class AutoCompletorGUI extends JFrame {
             // create the search text, and allow the user to interact with it
             searchText = new JTextField(DEF_COLUMNS);
             searchText.setMaximumSize(new Dimension(
-                searchText.getMaximumSize().width,
-                searchText.getPreferredSize().height));
+                    searchText.getMaximumSize().width,
+                    searchText.getPreferredSize().height));
             searchText.getInputMap().put(
-                KeyStroke.getKeyStroke("UP"),   "none");
+                    KeyStroke.getKeyStroke("UP"),   "none");
             searchText.getInputMap().put(
-                KeyStroke.getKeyStroke("DOWN"), "none");
+                    KeyStroke.getKeyStroke("DOWN"), "none");
             searchText.addFocusListener(
-                new FocusListener() {
-                    @Override
-                    public void focusGained(FocusEvent e) {
-                        int pos = searchText.getText().length();
-                        searchText.setCaretPosition(pos);
-                    }
-                    public void focusLost(FocusEvent e) { }
-                });
+                    new FocusListener() {
+                        @Override
+                        public void focusGained(FocusEvent e) {
+                            int pos = searchText.getText().length();
+                            searchText.setCaretPosition(pos);
+                        }
+                        public void focusLost(FocusEvent e) { }
+                    });
 
             // create the search text box
             JPanel searchTextPanel = new JPanel();
             searchTextPanel.add(searchText);
             searchTextPanel.setBorder(
-                BorderFactory.createEmptyBorder(0, 0, 0, 0));
+                    BorderFactory.createEmptyBorder(0, 0, 0, 0));
             searchTextPanel.setLayout(new GridLayout(1, 1));
 
             // create the drop-down menu items
@@ -289,13 +256,13 @@ public class AutoCompletorGUI extends JFrame {
             suggestions.setVisible(false);
             suggestions.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
             suggestions.setMaximumSize(new Dimension(
-                searchText.getMaximumSize().width,
-                suggestions.getPreferredSize().height));
+                    searchText.getMaximumSize().width,
+                    suggestions.getPreferredSize().height));
 
             // Set to make equal to the width of the textfield
             suggestions.setPrototypeCellValue(suggListLen);
             suggestions.setFont(
-                suggestions.getFont().deriveFont(Font.PLAIN, fontsize));
+                    suggestions.getFont().deriveFont(Font.PLAIN, fontsize));
             suggestions.setFixedCellHeight(cellHeight);
 
             // add arrow-key interactivity to the drop-down menu items
@@ -305,10 +272,10 @@ public class AutoCompletorGUI extends JFrame {
                 public void actionPerformed(ActionEvent e) {
                     if (!suggestions.isSelectionEmpty()) {
                         String selection =
-                            (String) suggestions.getSelectedValue();
+                                (String) suggestions.getSelectedValue();
                         if (displayWeights)
                             selection = selection.substring(
-                                0, selection.indexOf("<td width="));
+                                    0, selection.indexOf("<td width="));
                         selection = selection.replaceAll("\\<.*?>", "");
                         searchText.setText(selection);
                         getSuggestions(selection);
@@ -324,7 +291,7 @@ public class AutoCompletorGUI extends JFrame {
                     if (suggestions.getSelectedIndex() >= 0) {
                         suggestions.requestFocusInWindow();
                         suggestions.setSelectedIndex(
-                            suggestions.getSelectedIndex() - 1);
+                                suggestions.getSelectedIndex() - 1);
                     }
                 }
             };
@@ -335,7 +302,7 @@ public class AutoCompletorGUI extends JFrame {
                     if (suggestions.getSelectedIndex() != results.length) {
                         suggestions.requestFocusInWindow();
                         suggestions.setSelectedIndex(
-                            suggestions.getSelectedIndex() + 1);
+                                suggestions.getSelectedIndex() + 1);
                     }
                 }
             };
@@ -350,24 +317,24 @@ public class AutoCompletorGUI extends JFrame {
                     }
                     else if (suggestions.getSelectedIndex() >= 0) {
                         suggestions.setSelectedIndex(
-                            suggestions.getSelectedIndex() - 1);
+                                suggestions.getSelectedIndex() - 1);
                     }
                 }
             };
             suggestions.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke("UP"),   "moveSelectionUp");
+                    KeyStroke.getKeyStroke("UP"),   "moveSelectionUp");
             suggestions.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                KeyStroke.getKeyStroke("DOWN"), "moveSelectionDown");
+                    KeyStroke.getKeyStroke("DOWN"), "moveSelectionDown");
             suggestions.getActionMap().put(
-                "moveSelectionUp", moveSelectionUp);
+                    "moveSelectionUp", moveSelectionUp);
             suggestions.getActionMap().put(
-                "moveSelectionDown", moveSelectionDown);
+                    "moveSelectionDown", moveSelectionDown);
             suggestions.getInputMap(JComponent.WHEN_FOCUSED).put(
-                KeyStroke.getKeyStroke("ENTER"), "makeSelection");
+                    KeyStroke.getKeyStroke("ENTER"), "makeSelection");
             suggestions.getInputMap().put(
-                KeyStroke.getKeyStroke("UP"), "moveSelectionUpFocused");
+                    KeyStroke.getKeyStroke("UP"), "moveSelectionUpFocused");
             suggestions.getActionMap().put(
-                "moveSelectionUpFocused", moveSelectionUpFocused);
+                    "moveSelectionUpFocused", moveSelectionUpFocused);
             suggestions.getActionMap().put("makeSelection", makeSelection);
 
             // Create the suggestion drop-down panel and scroll bar
@@ -403,126 +370,126 @@ public class AutoCompletorGUI extends JFrame {
 
             // add mouse interactivity with the drop-down menu
             suggestions.addMouseListener(
-                new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent mouseEvent) {
-                        JList theList = (JList) mouseEvent.getSource();
-                        if (mouseEvent.getClickCount() >= 1) {
-                            int index = theList.locationToIndex(
-                                mouseEvent.getPoint());
-                            if (index >= 0) {
-                                String selection = getSelectedText();
-                                searchText.setText(selection);
-                                String text = searchText.getText();
-                                getSuggestions(text);
-                                searchOnline(searchText.getText());
+                    new MouseAdapter() {
+                        @Override
+                        public void mouseClicked(MouseEvent mouseEvent) {
+                            JList theList = (JList) mouseEvent.getSource();
+                            if (mouseEvent.getClickCount() >= 1) {
+                                int index = theList.locationToIndex(
+                                        mouseEvent.getPoint());
+                                if (index >= 0) {
+                                    String selection = getSelectedText();
+                                    searchText.setText(selection);
+                                    String text = searchText.getText();
+                                    getSuggestions(text);
+                                    searchOnline(searchText.getText());
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void mouseEntered(MouseEvent mouseEvent) {
-                        JList theList = (JList) mouseEvent.getSource();
-                        int index = theList.locationToIndex(
-                            mouseEvent.getPoint());
-                        theList.requestFocusInWindow();
-                        theList.setSelectedIndex(index);
-                    }
+                        @Override
+                        public void mouseEntered(MouseEvent mouseEvent) {
+                            JList theList = (JList) mouseEvent.getSource();
+                            int index = theList.locationToIndex(
+                                    mouseEvent.getPoint());
+                            theList.requestFocusInWindow();
+                            theList.setSelectedIndex(index);
+                        }
 
-                    @Override
-                    public void mouseExited(MouseEvent mouseEvent) {
-                        suggestions.clearSelection();
-                        searchText.requestFocusInWindow();
-                    }
-                });
+                        @Override
+                        public void mouseExited(MouseEvent mouseEvent) {
+                            suggestions.clearSelection();
+                            searchText.requestFocusInWindow();
+                        }
+                    });
             suggestions.addMouseMotionListener(
-                new MouseInputAdapter() {
-                    @Override
+                    new MouseInputAdapter() {
+                        @Override
 
-                    // Google a term when a user clicks on the dropdown menu
-                    public void mouseClicked(MouseEvent mouseEvent) {
-                        JList theList = (JList) mouseEvent.getSource();
-                        if (mouseEvent.getClickCount() >= 1) {
-                            int index = theList.locationToIndex(
-                                mouseEvent.getPoint());
-                            if (index >= 0) {
-                                String selection = getSelectedText();
-                                searchText.setText(selection);
-                                String text = searchText.getText();
-                                getSuggestions(text);
-                                searchOnline(searchText.getText());
+                        // Google a term when a user clicks on the dropdown menu
+                        public void mouseClicked(MouseEvent mouseEvent) {
+                            JList theList = (JList) mouseEvent.getSource();
+                            if (mouseEvent.getClickCount() >= 1) {
+                                int index = theList.locationToIndex(
+                                        mouseEvent.getPoint());
+                                if (index >= 0) {
+                                    String selection = getSelectedText();
+                                    searchText.setText(selection);
+                                    String text = searchText.getText();
+                                    getSuggestions(text);
+                                    searchOnline(searchText.getText());
+                                }
                             }
                         }
-                    }
 
-                    @Override
-                    public void mouseEntered(MouseEvent mouseEvent) {
-                        JList theList = (JList) mouseEvent.getSource();
-                        int index = theList.locationToIndex(
-                            mouseEvent.getPoint());
-                        theList.requestFocusInWindow();
-                        theList.setSelectedIndex(index);
-                    }
+                        @Override
+                        public void mouseEntered(MouseEvent mouseEvent) {
+                            JList theList = (JList) mouseEvent.getSource();
+                            int index = theList.locationToIndex(
+                                    mouseEvent.getPoint());
+                            theList.requestFocusInWindow();
+                            theList.setSelectedIndex(index);
+                        }
 
-                    @Override
-                    public void mouseMoved(MouseEvent mouseEvent) {
-                        JList theList = (JList) mouseEvent.getSource();
-                        int index = theList.locationToIndex(
-                            mouseEvent.getPoint());
-                        theList.requestFocusInWindow();
-                        theList.setSelectedIndex(index);
-                    }
-                });
+                        @Override
+                        public void mouseMoved(MouseEvent mouseEvent) {
+                            JList theList = (JList) mouseEvent.getSource();
+                            int index = theList.locationToIndex(
+                                    mouseEvent.getPoint());
+                            theList.requestFocusInWindow();
+                            theList.setSelectedIndex(index);
+                        }
+                    });
 
             // add a listener that allows updates each time the user types
             searchText.getDocument().addDocumentListener(
-                new DocumentListener() {
-                    public void insertUpdate(DocumentEvent e)
-                    {
-                        changedUpdate(e);
-                    }
-                    public void removeUpdate(DocumentEvent e)
-                    { changedUpdate(e); }
-                    public void changedUpdate(DocumentEvent e)
-                    {
-                        String text = searchText.getText();
+                    new DocumentListener() {
+                        public void insertUpdate(DocumentEvent e)
+                        {
+                            changedUpdate(e);
+                        }
+                        public void removeUpdate(DocumentEvent e)
+                        { changedUpdate(e); }
+                        public void changedUpdate(DocumentEvent e)
+                        {
+                            String text = searchText.getText();
 
-                        // updates the drop-down menu
-                        getSuggestions(text);
-                        updateListSize();
-                    }
-                });
+                            // updates the drop-down menu
+                            getSuggestions(text);
+                            updateListSize();
+                        }
+                    });
 
             // When a user clicks on a suggestion, Google it
             searchText.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        String selection = getSelectedText();
-                        searchText.setText(selection);
-                        getSuggestions(selection);
-                        searchOnline(searchText.getText());
-                    }
-                });
+                    new ActionListener() {
+                        public void actionPerformed(ActionEvent e) {
+                            String selection = getSelectedText();
+                            searchText.setText(selection);
+                            getSuggestions(selection);
+                            searchOnline(searchText.getText());
+                        }
+                    });
 
             // Define the layout of the text box and suggestion dropdown
             layout.setHorizontalGroup(
-                layout.createSequentialGroup()
-                    .addGroup(layout.createParallelGroup(
-                            GroupLayout.Alignment.LEADING)
-                        .addComponent(searchTextPanel, 0,
-                            GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE)
-                        .addComponent(suggestionsPanel,
-                            GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.DEFAULT_SIZE,
-                            GroupLayout.PREFERRED_SIZE))
+                    layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(
+                                            GroupLayout.Alignment.LEADING)
+                                    .addComponent(searchTextPanel, 0,
+                                            GroupLayout.DEFAULT_SIZE,
+                                            GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(suggestionsPanel,
+                                            GroupLayout.DEFAULT_SIZE,
+                                            GroupLayout.DEFAULT_SIZE,
+                                            GroupLayout.PREFERRED_SIZE))
 
             );
 
             layout.setVerticalGroup(
-                layout.createSequentialGroup()
-                    .addComponent(searchTextPanel)
-                    .addComponent(suggestionsPanel)
+                    layout.createSequentialGroup()
+                            .addComponent(searchTextPanel)
+                            .addComponent(suggestionsPanel)
             );
         }
 
@@ -587,13 +554,13 @@ public class AutoCompletorGUI extends JFrame {
                         String next = allResults[i].toString();
                         if (allResults[i] == null) {
                             throw new NullPointerException("allMatches() "
-                                + "returned an array with a null entry");
+                                    + "returned an array with a null entry");
                         }
                         int tab = next.indexOf('\t');
                         if (tab < 0) {
                             throw new RuntimeException("allMatches() returned"
-                                + " an array with an entry without a tab:"
-                                + " '" + next + "'");
+                                    + " an array with an entry without a tab:"
+                                    + " '" + next + "'");
                         }
                         String weight = next.substring(0, tab).trim();
                         String query  = next.substring(tab);
@@ -604,15 +571,15 @@ public class AutoCompletorGUI extends JFrame {
 
                         // create the table HTML
                         results[i] = "<html><table width=\""
-                            + searchText.getPreferredSize().width + "\">"
-                            + "<tr><td align=left>"
-                            + query.substring(0, textLen + 1)
-                            + "<b>" + query.substring(textLen + 1) + "</b>";
+                                + searchText.getPreferredSize().width + "\">"
+                                + "<tr><td align=left>"
+                                + query.substring(0, textLen + 1)
+                                + "<b>" + query.substring(textLen + 1) + "</b>";
                         if (displayWeights) {
                             results[i] += "<td width=\"10%\" align=right>"
-                                + "<font size=-1><span id=\"weight\" "
-                                + "style=\"float:right;color:gray\">"
-                                + weight + "</font>";
+                                    + "<font size=-1><span id=\"weight\" "
+                                    + "style=\"float:right;color:gray\">"
+                                    + weight + "</font>";
                         }
                         results[i] += "</table></html>";
                     }
@@ -682,22 +649,4 @@ public class AutoCompletorGUI extends JFrame {
         }
     }
 
-    /**
-     * Creates an AutoCompletorGUI object and start it continuously running
-     * @param args the filename from which the AutoCompletor object is populated
-     * and the integer k which defines the maximum number of objects in the
-     * dropdown menu
-     */
-    public static void main(String[] args) {
-//        final String filename = args[0];
-        final String filename = "cities.txt";
-//        final int k = Integer.parseInt(args[1]);
-        final int k = 10;
-        SwingUtilities.invokeLater(
-            new Runnable() {
-                public void run() {
-                    new AutoCompletorGUI(filename, k).setVisible(true);
-                }
-            });
-    }
 }

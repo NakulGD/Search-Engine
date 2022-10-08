@@ -63,4 +63,15 @@ public class SearchTerm implements Comparable<SearchTerm> {
         return String.format("%-10d\t%s", this.weight, this.query);
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof SearchTerm) {
+            SearchTerm otherST = (SearchTerm) other;
+            return (this.query.equals(otherST.query) && this.weight == otherST.weight);
+        }
+        else {
+            return false;
+        }
+    }
+
 }

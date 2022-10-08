@@ -25,7 +25,7 @@ public class PublicTests {
     }
 
     @Test
-    public void testGood() {
+    public void testGood() throws Exception {
         String query = "good";
         Map<String, Long> expected = Map.of(
                 "ML", 0L,
@@ -39,7 +39,7 @@ public class PublicTests {
     }
 
     @Test
-    public void testHeIs() {
+    public void testHeIs() throws Exception {
         String query = "he is";
         Map<String, Long> expected = Map.of(
                 "ML", 1L,
@@ -53,7 +53,7 @@ public class PublicTests {
     }
 
     @Test
-    public void testProfessorWasBad() {
+    public void testProfessorWasBad() throws Exception {
         String query = "professor was bad";
         Map<String, Long> expected = Map.of(
                 "ML", 0L,

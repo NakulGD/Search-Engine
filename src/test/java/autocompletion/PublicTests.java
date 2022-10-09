@@ -25,6 +25,7 @@ public class PublicTests {
     @Test
     public void test_San_3() {
         SearchTerm[] st = ac.topKMatches("San", 3);
+        SearchTerm[] test1 = ac.allMatches("San");
 
         SearchTerm santiago = new SearchTerm("Santiago, Chile", 4837295);
         SearchTerm santoDomingo = new SearchTerm("Santo Domingo, Dominican Republic", 2201941);

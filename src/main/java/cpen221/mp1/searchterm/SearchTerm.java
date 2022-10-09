@@ -19,6 +19,15 @@ public class SearchTerm implements Comparable<SearchTerm> {
         this.weight = weight;
     }
 
+
+    public String getQuery() {
+        return query;
+    }
+
+    public long getWeight() {
+        return weight;
+    }
+
     /**
      * Obtain a comparator for comparing two search terms based on weight.
      *
@@ -40,6 +49,8 @@ public class SearchTerm implements Comparable<SearchTerm> {
      * @return a comparator that compares two search terms lexicographically
      */
     public static Comparator<SearchTerm> byPrefixOrder() {
+
+
         return null; // TODO: Implement this method
     }
 

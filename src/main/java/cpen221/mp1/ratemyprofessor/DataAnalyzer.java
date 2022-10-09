@@ -62,7 +62,9 @@ public class DataAnalyzer {
         //Iterate through each line, checking whether it contains the search query
         for(int i = 0; i < this.stringList.size(); i++) {
             String currentLine = this.stringList.get(i);
-            if(containsGram(currentLine, query)) {
+
+            if(numOccurences(currentLine, query) > 0) {
+
                 gender = getGender(currentLine);
                 rating = getRating(currentLine);
 
@@ -79,7 +81,9 @@ public class DataAnalyzer {
                 //If the histogram has a category for the gender and rating, add one to its count
                 if(histogram.containsKey(gender + highMediumLow)) {
                     long count = histogram.get(gender + highMediumLow);
-                    histogram.put(gender + highMediumLow, count += numOccurrences(currentLine, query));
+
+                    histogram.put(gender + highMediumLow, count += numOccurences(currentLine, query));
+
                 }
             }
         }
@@ -154,11 +158,20 @@ public class DataAnalyzer {
 
     /**
      * Searches current line for occurrence of given NGram
+<<<<<<< HEAD
      * @param line, the current line being searched through
      * @param gram, the gram being searched for
      * @return number of occurrences of the gram in the line
      */
     public long numOccurrences(String line, String gram) throws Exception {
+
+     *
+     * @param line, the current line being searched through
+     * @param gram, the gram being searched for
+     * @return number of occurences of the gram in the line
+     */
+    public long numOccurences(String line, String gram) throws Exception {
+
 
         String[] lineArray = getWords(line);
         String[] gramArray = getWords(gram);
@@ -185,11 +198,13 @@ public class DataAnalyzer {
         return total;
     }
 
+
     /**
      * Take a text input and remove punctuation
      * @return an array list of individuals words from
      * the text input
      */
+
     public String[] getWords(String text) {
         ArrayList<String> words = new ArrayList<>();
         BreakIterator wb = BreakIterator.getWordInstance();
@@ -216,4 +231,5 @@ public class DataAnalyzer {
         words.toArray(wordsArray);
         return wordsArray;
     }
+
 }

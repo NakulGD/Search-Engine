@@ -282,15 +282,5 @@ public class PublicTests {
 
         assertEquals(analyzer.getRating(analyzer.stringList.get(0)), 5.0);
     }
-    
-
-//    @Test
-//    public void testStringList() throws Exception {
-//        String fileName = "data/test_data.txt";
-//
-//        DataAnalyzer analyzer = new DataAnalyzer(fileName);
-//
-//        assertTrue(analyzer.containsGram(testLine, "the"));
-//    }
 }
 

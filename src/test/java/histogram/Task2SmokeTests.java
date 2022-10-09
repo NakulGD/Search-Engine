@@ -63,4 +63,32 @@ public class Task2SmokeTests {
         assertEquals(expected, da2.getHistogram(query));
     }
 
+    @Test
+    public void testHistogramFile2() throws Exception {
+        String query = "is a";
+        Map<String, Long> expected = Map.of(
+                "ML", 0L,
+                "WL", 0L,
+                "MM", 0L,
+                "WM", 0L,
+                "MH", 1L,
+                "WH", 1L
+        );
+        assertEquals(expected, da2.getHistogram(query));
+    }
+
+    @Test
+    public void testHistogramSomeCaps() throws Exception {
+        String query = "iS A";
+        Map<String, Long> expected = Map.of(
+                "ML", 0L,
+                "WL", 0L,
+                "MM", 0L,
+                "WM", 0L,
+                "MH", 1L,
+                "WH", 1L
+        );
+        assertEquals(expected, da2.getHistogram(query));
+    }
+
 }

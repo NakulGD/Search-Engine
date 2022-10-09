@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class NGrams {
 
-    String[] line;
-    String[] currentLine;
+    private String[] line;
+    private String[] currentLine;
 
     /**
      * Create an NGrams object
@@ -16,7 +16,11 @@ public class NGrams {
      * @param text all the text to analyze and create n-grams from;
      *             is not null and is not empty.
      */
-    public NGrams(String[] text) {
+    public NGrams(String[] text) throws Exception {
+
+        if(text == null) {
+            throw new Exception("Invalid input");
+        }
 
         this.line = text;
         currentLine = null;
@@ -65,30 +69,26 @@ public class NGrams {
 
         //Iterate through array and turn sentences into a separate string array
 
-        for(int i = 0; i < line.length; i++){
-            currentLine = getWords(this.line[i]);
+        for (String s : line) {
+            this.currentLine = getWords(s);
 
             //Throw exception in the case of empty array
-            if(this.currentLine.length == 0) {
-            
+            if (this.currentLine.length == 0) {
+
                 throw new Exception("Invalid String");
             }
 
             //Iterate 1 through to longest possible gram, add map to list
 
-            for(int glength = 1; glength <= this.currentLine.length; glength++) {
-
+            for (int glength = 1; glength <= this.currentLine.length; glength++) {
                 listOfGrams.add(new HashMap<String, Long>());
 
                 //Iterate through line with each word as starting word in gram
-
-                for(int j = 0; j <= this.currentLine.length - glength; j++) {
+                for (int j = 0; j <= this.currentLine.length - glength; j++) {
 
                     //Using StringBuilder, construct current String of glength words
                     StringBuilder current = new StringBuilder();
-
                     for (int k = j; k < j + glength; k++) {
-
                         current.append(this.currentLine[k]);
 
                         //Insert space unless last word

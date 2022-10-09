@@ -60,24 +60,21 @@ public class DataAnalyzer {
         histogram.put("WH", 0L);
 
         //Iterate through each line, checking whether it contains the search query
-        for(int i = 0; i < this.stringList.size(); i++) {
-            String currentLine = this.stringList.get(i);
-            if(numOccurences(currentLine, query) > 0) {
+        for (String currentLine : this.stringList) {
+            if (numOccurences(currentLine, query) > 0) {
                 gender = getGender(currentLine);
                 rating = getRating(currentLine);
 
-                if(Double.compare(rating, 0.0) >= 0 && Double.compare(rating, 2.0) <= 0) {
+                if (Double.compare(rating, 0.0) >= 0 && Double.compare(rating, 2.0) <= 0) {
                     highMediumLow = "L";
-                }
-                else if(Double.compare(rating, 2.0) > 0 && Double.compare(rating, 3.5) <= 0) {
+                } else if (Double.compare(rating, 2.0) > 0 && Double.compare(rating, 3.5) <= 0) {
                     highMediumLow = "M";
-                }
-                else if(Double.compare(rating, 3.5) > 0 && Double.compare(rating, 5.0) <= 0) {
+                } else if (Double.compare(rating, 3.5) > 0 && Double.compare(rating, 5.0) <= 0) {
                     highMediumLow = "H";
                 }
 
                 //If the histogram has a category for the gender and rating, add one to its count
-                if(histogram.containsKey(gender + highMediumLow)) {
+                if (histogram.containsKey(gender + highMediumLow)) {
                     long count = histogram.get(gender + highMediumLow);
                     histogram.put(gender + highMediumLow, count += numOccurences(currentLine, query));
                 }

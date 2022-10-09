@@ -224,7 +224,7 @@ public class PublicTests {
 
         DataAnalyzer analyzer = new DataAnalyzer(fileName);
 
-        assertEquals(analyzer.getGender(analyzer.stringList.get(0)), "w");
+        assertEquals(analyzer.getGender(analyzer.stringList.get(0)), "W");
     }
 
     @Test
@@ -234,6 +234,46 @@ public class PublicTests {
         DataAnalyzer analyzer = new DataAnalyzer(fileName);
 
         assertEquals(analyzer.getRating(analyzer.stringList.get(0)), 5.0);
+    }
+
+    @Test
+    public void test_NGrams3() throws Exception {
+        String[] test = {"Aa a a aa a a a%a"};
+
+        List<Map<String, Long>> expectedListofMaps = new ArrayList<Map<String, Long>>();
+        expectedListofMaps.add(new HashMap<String, Long>());
+        expectedListofMaps.get(0).put("aa", 3L);
+        expectedListofMaps.get(0).put("a", 4L);
+
+        expectedListofMaps.add(new HashMap<String, Long>());
+        expectedListofMaps.get(1).put("aa a", 2L);
+        expectedListofMaps.get(1).put("a a", 2L);
+        expectedListofMaps.get(1).put("a aa", 2L);
+
+        expectedListofMaps.add(new HashMap<String, Long>());
+        expectedListofMaps.get(2).put("aa a a", 2L);
+        expectedListofMaps.get(2).put("a a aa", 2L);
+        expectedListofMaps.get(2).put("a aa a", 1L);
+
+        expectedListofMaps.add(new HashMap<String, Long>());
+        expectedListofMaps.get(3).put("aa a a aa", 2L);
+        expectedListofMaps.get(3).put("a a aa a", 1L);
+        expectedListofMaps.get(3).put("a aa a a", 1L);
+
+        expectedListofMaps.add(new HashMap<String, Long>());
+        expectedListofMaps.get(4).put("aa a a aa a", 1L);
+        expectedListofMaps.get(4).put("a a aa a a", 1L);
+        expectedListofMaps.get(4).put("a aa a a aa", 1L);
+
+        expectedListofMaps.add(new HashMap<String, Long>());
+        expectedListofMaps.get(5).put("aa a a aa a a", 1L);
+        expectedListofMaps.get(5).put("a a aa a a aa", 1L);
+
+        expectedListofMaps.add(new HashMap<String, Long>());
+        expectedListofMaps.get(6).put("aa a a aa a a aa", 1L);
+
+        NGrams ngrams1 = new NGrams(test);
+        assertEquals(expectedListofMaps, ngrams1.getAllNGrams());
     }
 
 

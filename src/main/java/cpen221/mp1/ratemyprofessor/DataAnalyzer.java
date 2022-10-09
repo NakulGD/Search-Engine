@@ -158,13 +158,12 @@ public class DataAnalyzer {
 
     /**
      * Searches current line for occurrence of given NGram
-<<<<<<< HEAD
      * @param line, the current line being searched through
      * @param gram, the gram being searched for
      * @return number of occurrences of the gram in the line
      */
-    public long numOccurrences(String line, String gram) throws Exception {
 
+    /**
      *
      * @param line, the current line being searched through
      * @param gram, the gram being searched for

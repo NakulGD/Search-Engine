@@ -1,21 +1,22 @@
 package cpen221.mp1.datawrapper;
 
+import cpen221.mp1.autocompletion.gui.In;
+
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
 
 public class DataWrapper {
 
-    private Scanner dataReader;
+    private In dataReader;
+    private  File dataFile;
 
     /**
      * Constructor for DataWrapper, opens a file and creates a scanner to go through the data
      * The scanner is stored in the class variable dataReader
      */
     public DataWrapper(String fileName) throws FileNotFoundException {
-        File dataFile;
         dataFile = new File(fileName);
-        dataReader = new Scanner(dataFile);
+        dataReader = new In(dataFile);
     }
 
     /**
@@ -25,7 +26,7 @@ public class DataWrapper {
      */
     public String nextLine() {
         if (dataReader.hasNextLine()) {
-            return dataReader.nextLine();
+            return dataReader.readLine();
         } else {
             return null;
         }
@@ -35,7 +36,7 @@ public class DataWrapper {
      * Resets the file scanner to start at the beginning of the file
      */
     public void resetScanner() {
-        dataReader.reset();
+        dataReader= new In(dataFile);
     }
 
 }

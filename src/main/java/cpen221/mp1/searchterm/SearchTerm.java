@@ -49,9 +49,12 @@ public class SearchTerm implements Comparable<SearchTerm> {
      * @return a comparator that compares two search terms lexicographically
      */
     public static Comparator<SearchTerm> byPrefixOrder() {
-
-
-        return null; // TODO: Implement this method
+        return new Comparator<SearchTerm>() {
+            @Override
+            public int compare(SearchTerm o1, SearchTerm o2) {
+                return o1.query.compareTo(o2.query);
+            }
+        };
     }
 
     /**

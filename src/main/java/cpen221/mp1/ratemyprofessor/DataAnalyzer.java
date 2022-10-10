@@ -1,13 +1,14 @@
 package cpen221.mp1.ratemyprofessor;
 
 import cpen221.mp1.datawrapper.DataWrapper;
+import cpen221.mp1.ngrams.NGrams;
 
 import java.io.FileNotFoundException;
 import java.text.BreakIterator;
 import java.util.Map;
 import java.util.*;
 
-public class DataAnalyzer {
+public class DataAnalyzer extends NGrams {
 
     public DataWrapper dw;
     public List<String> stringList = new ArrayList<String>();
@@ -154,81 +155,6 @@ public class DataAnalyzer {
         String[] lineArray = getWords(line);
         double rating = Double.parseDouble(lineArray[0]);
         return rating;
-    }
-
-    /**
-     * Searches current line for occurrence of given NGram
-     * @param line, the current line being searched through
-     * @param gram, the gram being searched for
-     * @return number of occurrences of the gram in the line
-     */
-
-    /**
-     *
-     * @param line, the current line being searched through
-     * @param gram, the gram being searched for
-     * @return number of occurences of the gram in the line
-     */
-    public long numOccurences(String line, String gram) throws Exception {
-
-
-        String[] lineArray = getWords(line);
-        String[] gramArray = getWords(gram);
-        int count = 0;
-        long total = 0;
-
-        //Error if gram length is longer than line length
-        if(gramArray.length > lineArray.length) {
-            throw new Exception("Invalid input");
-        }
-
-        //Iterate through line to find matching terms of length equal to gram length
-        for(int i = 0; i < lineArray.length - gramArray.length; i++) {
-            count = 0;
-            for(int j = 0; j < gramArray.length; j++) {
-                if(lineArray[i + j].equals(gramArray[j])) {
-                    count++;
-                }
-            }
-            if(count == gramArray.length) {
-                total++;
-            }
-        }
-        return total;
-    }
-
-
-    /**
-     * Take a text input and remove punctuation
-     * @return an array list of individuals words from
-     * the text input
-     */
-
-    public String[] getWords(String text) {
-        ArrayList<String> words = new ArrayList<>();
-        BreakIterator wb = BreakIterator.getWordInstance();
-        wb.setText(text);
-        int start = wb.first();
-        for (int end = wb.next();
-             end != BreakIterator.DONE;
-             start = end, end = wb.next()) {
-            String word = text.substring(start, end).toLowerCase();
-            word = word.replaceAll("^\\s*\\p{Punct}+\\s*", "").replaceAll("\\s*\\p{Punct}+\\s*$", "");
-            if (!word.equals(" ")) {
-                words.add(word);
-            }
-        }
-
-        for (int i = 0; i < words.size(); i++) {
-            if(words.get(i).equals("")) {
-                words.remove(i);
-                i--;
-            }
-        }
-
-        String[] wordsArray = new String[words.size()];
-        words.toArray(wordsArray);
-        return wordsArray;
     }
 
 }

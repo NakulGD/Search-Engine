@@ -25,6 +25,9 @@ public class NGrams {
         currentLine = null;
     }
 
+    public NGrams() {
+    }
+
     /**
      * Obtain the total number of unique 1-grams,
      * 2-grams, ..., n-grams.
@@ -158,5 +161,39 @@ public class NGrams {
         String[] wordsArray = new String[words.size()];
         words.toArray(wordsArray);
         return wordsArray;
+    }
+
+    /**
+     * Searches current line for occurrence of given NGram
+     * @param line, the current line being searched through
+     * @param gram, the gram being searched for
+     * @return number of occurrences of the gram in the line
+     */
+    public long numOccurences(String line, String gram) throws Exception {
+
+
+        String[] lineArray = getWords(line);
+        String[] gramArray = getWords(gram);
+        int count = 0;
+        long total = 0;
+
+        //Error if gram length is longer than line length
+        if(gramArray.length > lineArray.length) {
+            throw new Exception("Invalid input");
+        }
+
+        //Iterate through line to find matching terms of length equal to gram length
+        for(int i = 0; i < lineArray.length - gramArray.length; i++) {
+            count = 0;
+            for(int j = 0; j < gramArray.length; j++) {
+                if(lineArray[i + j].equals(gramArray[j])) {
+                    count++;
+                }
+            }
+            if(count == gramArray.length) {
+                total++;
+            }
+        }
+        return total;
     }
 }

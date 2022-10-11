@@ -7,7 +7,6 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class PublicTests {
     @Test
     public void test_NGrams1() throws Exception {
@@ -195,4 +194,3 @@ public class PublicTests {
         assertEquals(expectedNGrams, ng.getAllNGrams());
     }
 }
-

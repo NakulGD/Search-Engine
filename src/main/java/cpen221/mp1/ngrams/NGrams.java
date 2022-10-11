@@ -1,5 +1,6 @@
 package cpen221.mp1.ngrams;
 
+import java.io.FileNotFoundException;
 import java.text.BreakIterator;
 import java.util.*;
 import java.util.List;
@@ -10,7 +11,6 @@ public class NGrams {
     String[] line;
     String[] currentLine;
 
-
     /**
      * Create an NGrams object
      *
@@ -18,6 +18,7 @@ public class NGrams {
      *             is not null and is not empty.
      */
     public NGrams(String[] text) {
+
         this.line = text;
         currentLine = null;
     }
@@ -38,7 +39,6 @@ public class NGrams {
 
         // First get list of possible grams
         List<Map<String, Long>> listOfGrams = this.getAllNGrams();
-
 
         //Check whether inputted n is valid
         if(n < 1 || n > listOfGrams.size()) {
@@ -65,11 +65,13 @@ public class NGrams {
         List<Map<String, Long>> listOfGrams = new ArrayList<Map<String, Long>>();
 
         //Iterate through array and turn sentences into a separate string array
+
         for(int i = 0; i < line.length; i++){
             currentLine = getWords(this.line[i]);
 
             //Throw exception in the case of empty array
             if(this.currentLine.length == 0) {
+            
                 throw new Exception("Invalid String");
             }
 
@@ -80,12 +82,14 @@ public class NGrams {
                 listOfGrams.add(new HashMap<String, Long>());
 
                 //Iterate through line with each word as starting word in gram
+
                 for(int j = 0; j <= this.currentLine.length - glength; j++) {
 
                     //Using StringBuilder, construct current String of glength words
                     StringBuilder current = new StringBuilder();
 
                     for (int k = j; k < j + glength; k++) {
+
                         current.append(this.currentLine[k]);
 
                         //Insert space unless last word
@@ -115,8 +119,13 @@ public class NGrams {
         return listOfGrams;
     }
 
-    // Add specs for getWords method
-    private String[] getWords(String text) {
+
+    /**
+     * Obtain a String[] array where indices are individual words of input String with punctuation and spaces removed
+     * @param text which is a line of text
+     * @return a String[] array where indices are individual words of input String with punctuation and spaces removed
+     */
+    public String[] getWords(String text) {
         ArrayList<String> words = new ArrayList<>();
         BreakIterator wb = BreakIterator.getWordInstance();
         wb.setText(text);
@@ -130,12 +139,14 @@ public class NGrams {
                 words.add(word);
             }
         }
+        
         for (int i = 0; i < words.size(); i++) {
-            if(words.get(i).equals("")) { //Ask why Anu's laptop didn't pass tests when == instead of .equals()
+            if(words.get(i).equals("")) {
                 words.remove(i);
                 i--;
             }
         }
+
         String[] wordsArray = new String[words.size()];
         words.toArray(wordsArray);
         return wordsArray;

@@ -10,7 +10,7 @@ import java.util.*;
 
 import static cpen221.mp1.searchterm.SearchTerm.byReverseWeightOrder;
 
-public class AutoCompletor extends NGrams {
+public class AutoCompletor {
 
     private static final int DEFAULT_SEARCH_LIMIT = 10;
 

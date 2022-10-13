@@ -25,9 +25,6 @@ public class NGrams {
         currentLine = null;
     }
 
-    public NGrams() {
-    }
-
     /**
      * Obtain the total number of unique 1-grams,
      * 2-grams, ..., n-grams.

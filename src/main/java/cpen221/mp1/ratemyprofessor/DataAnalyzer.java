@@ -10,8 +10,6 @@ import java.util.*;
 
 public class DataAnalyzer {
 
-    private NGrams NGrams;
-
     public DataWrapper dw;
     public List<String> stringList = new ArrayList<String>();
 
@@ -33,8 +31,6 @@ public class DataAnalyzer {
             stringList.add(nextLine);
             nextLine = dw.nextLine();
         }
-
-        NGrams = new NGrams(stringList.toArray(new String[0]));
     }
 
     /**

@@ -40,4 +40,11 @@ public class Task3PublicTests {
         Assertions.assertArrayEquals(expectedST, st);
     }
 
+    @Test
+    public void test_Val(){
+        int matches = ac.numberOfMatches("Val-");
+
+        Assertions.assertEquals(5, matches);
+    }
+
 }

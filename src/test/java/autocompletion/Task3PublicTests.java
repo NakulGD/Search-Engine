@@ -21,7 +21,7 @@ public class Task3PublicTests {
     }
 
     @Test
-    public void test_San_3() {
+    public void test_Sanxx() {
         SearchTerm[] st = ac.topKMatches("San");
         SearchTerm[] test1 = ac.allMatches("San");
 

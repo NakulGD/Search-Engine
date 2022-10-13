@@ -25,9 +25,6 @@ public class NGrams {
         currentLine = null;
     }
 
-    public NGrams() {
-    }
-
     /**
      * Obtain the total number of unique 1-grams,
      * 2-grams, ..., n-grams.
@@ -134,7 +131,7 @@ public class NGrams {
      * @param text which is a line of text
      * @return a String[] array where indices are individual words of input String with punctuation and spaces removed
      */
-    public String[] getWords(String text) {
+    public static String[] getWords(String text) {
         ArrayList<String> words = new ArrayList<>();
         BreakIterator wb = BreakIterator.getWordInstance();
         wb.setText(text);
@@ -169,7 +166,7 @@ public class NGrams {
      * @param gram, the gram being searched for
      * @return number of occurrences of the gram in the line
      */
-    public long numOccurences(String line, String gram) throws Exception {
+    public static long numOccurences(String line, String gram) throws Exception {
 
 
         String[] lineArray = getWords(line);

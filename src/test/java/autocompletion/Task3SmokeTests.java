@@ -6,10 +6,8 @@ import cpen221.mp1.searchterm.SearchTerm;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import java.util.Map;
-import java.util.List;
 
-public class PublicTests {
+public class Task3SmokeTests {
 
     private static String citiesData = "data/cities.txt";
     private static DataAnalyzer cityAnalyzer;

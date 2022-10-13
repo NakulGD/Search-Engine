@@ -8,7 +8,7 @@ import java.text.BreakIterator;
 import java.util.Map;
 import java.util.*;
 
-public class DataAnalyzer extends NGrams {
+public class DataAnalyzer {
 
     public DataWrapper dw;
     public List<String> stringList = new ArrayList<String>();
@@ -64,7 +64,7 @@ public class DataAnalyzer extends NGrams {
         for(int i = 0; i < this.stringList.size(); i++) {
             String currentLine = this.stringList.get(i);
 
-            if(numOccurences(currentLine, query) > 0) {
+            if(NGrams.numOccurences(currentLine, query) > 0) {
 
                 gender = getGender(currentLine);
                 rating = getRating(currentLine);
@@ -83,7 +83,7 @@ public class DataAnalyzer extends NGrams {
                 if(histogram.containsKey(gender + highMediumLow)) {
                     long count = histogram.get(gender + highMediumLow);
 
-                    histogram.put(gender + highMediumLow, count += numOccurences(currentLine, query));
+                    histogram.put(gender + highMediumLow, count += NGrams.numOccurences(currentLine, query));
 
                 }
             }
@@ -112,8 +112,8 @@ public class DataAnalyzer extends NGrams {
      */
     public boolean containsGram(String line, String gram) throws Exception {
 
-        String[] lineArray = getWords(line);
-        String[] gramArray = getWords(gram);
+        String[] lineArray = NGrams.getWords(line);
+        String[] gramArray = NGrams.getWords(gram);
         int count = 0;
 
         //Error if gram length is longer than line length
@@ -142,7 +142,7 @@ public class DataAnalyzer extends NGrams {
      * @return the gender of the professor as a String
      */
     public String getGender(String line) {
-        String[] lineArray = getWords(line);
+        String[] lineArray = NGrams.getWords(line);
         return lineArray[1].toUpperCase();
     }
 
@@ -152,7 +152,7 @@ public class DataAnalyzer extends NGrams {
      * @return the rating of the progessor as an integer
      */
     public double getRating(String line) {
-        String[] lineArray = getWords(line);
+        String[] lineArray = NGrams.getWords(line);
         double rating = Double.parseDouble(lineArray[0]);
         return rating;
     }

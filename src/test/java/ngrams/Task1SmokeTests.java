@@ -1,4 +1,4 @@
-package cpen221.mp1;
+package ngrams;
 
 import cpen221.mp1.ngrams.NGrams;
 import org.junit.jupiter.api.Test;
@@ -8,10 +8,21 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import cpen221.mp1.ngrams.NGrams;
+import cpen221.mp1.ratemyprofessor.DataAnalyzer;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import java.io.FileNotFoundException;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class Task1SmokeTests {
 
     @Test
-    public void simpleTestCount() {
+    public void simpleTestCount() throws Exception{
         String text1 = "the blue cow jumped over the blue cow moon!";
         String text2 = "The Blue Period of Picasso is the period between 1900 and 1904, when he painted essentially monochromatic paintings in shades of blue and blue-green, only occasionally warmed by other colors.";
 
@@ -23,7 +34,7 @@ public class Task1SmokeTests {
     }
 
     @Test
-    public void simpleTestGetNGrams() {
+    public void simpleTestGetNGrams() throws Exception{
         String text1 = "great class";
         String text2 = "good textbook written by him";
 

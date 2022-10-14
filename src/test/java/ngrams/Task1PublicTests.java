@@ -9,6 +9,13 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+public class Task1PublicTests {
+    @Test
+    public void test_NGrams1() throws Exception {
+        String[] test = {"The the big boy."};
+
 public class NGrams_CustomTests {
     @Test
     public void testNGrams1() throws Exception {

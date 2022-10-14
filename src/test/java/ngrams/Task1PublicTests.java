@@ -12,11 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 public class Task1PublicTests {
-    @Test
-    public void test_NGrams1() throws Exception {
-        String[] test = {"The the big boy."};
 
-public class NGrams_CustomTests {
     @Test
     public void testNGrams1() throws Exception {
         String[] test = {"The the big boy."};
@@ -126,7 +122,7 @@ public class NGrams_CustomTests {
     }
 
     @Test
-    public void testNGramsException() throws IllegalArgumentException{
+    public void testNGramsException() throws IllegalArgumentException {
         String[] test = {""};
         NGrams grams = new NGrams(test);
         assertThrows(IllegalArgumentException.class, () -> grams.getAllNGrams());

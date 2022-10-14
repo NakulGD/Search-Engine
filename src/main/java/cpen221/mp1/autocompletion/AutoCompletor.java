@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.text.BreakIterator;
 import java.util.*;
 
+import static cpen221.mp1.searchterm.SearchTerm.byPrefixOrder;
 import static cpen221.mp1.searchterm.SearchTerm.byReverseWeightOrder;
 
 public class AutoCompletor {
@@ -40,6 +41,30 @@ public class AutoCompletor {
 
         SearchTerm[] matchesArray = new SearchTerm[matches.size()];
         matchesArray = matches.toArray(matchesArray);
+
+        //order matchesArray by decreasing weight
+        for(int j = 0; j < matchesArray.length - 1; j++){
+            int comparisonWeight = byReverseWeightOrder().compare(matchesArray[j], matchesArray[j+1]);
+            if(comparisonWeight == -1){
+                SearchTerm temp = matchesArray[j];
+                matchesArray[j] = matchesArray[j+1];
+                matchesArray[j+1] = temp;
+                j = -1;
+            }
+        }
+
+        //order matchesArray lexicographically if weights are the same
+        for(int k = 0; k < matchesArray.length - 1; k++){
+            int comparisonLexo = byPrefixOrder().compare(matchesArray[k], matchesArray[k+1]);
+            if (matchesArray[k].getWeight() == matchesArray[k+1].getWeight()) {
+                if (comparisonLexo < 0) {
+                    SearchTerm temp = matchesArray[k];
+                    matchesArray[k] = matchesArray[k+1];
+                    matchesArray[k+1] = temp;
+                    k = -1;
+                }
+            }
+        }
         return matchesArray;
     }
 

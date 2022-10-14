@@ -13,11 +13,42 @@ public class Task3PublicTests {
     private static DataAnalyzer cityAnalyzer;
     private static AutoCompletor ac;
 
+    private static String letterData = "data/letters.txt";
+    private static DataAnalyzer letterAnalyzer;
+    private static AutoCompletor ac2;
+
     @BeforeAll
     public static void setupTests() {
         cityAnalyzer = new DataAnalyzer(citiesData);
-        SearchTerm[] test = cityAnalyzer.getSearchTerms();
         ac = new AutoCompletor(cityAnalyzer.getSearchTerms());
+        letterAnalyzer = new DataAnalyzer(letterData);
+        ac2 = new AutoCompletor(letterAnalyzer.getSearchTerms());
+    }
+
+    @Test
+    public void test_letterUnOrderedWeight(){
+        SearchTerm[] st = ac2.topKMatches("M", 2);
+
+        SearchTerm mum = new SearchTerm("Mumbai, India", 12691836);
+        SearchTerm mex = new SearchTerm("Mexico City, Distrito Federal, Mexico", 12294193);
+
+        SearchTerm[] expectedST = new SearchTerm[] {mum, mex};
+
+        Assertions.assertArrayEquals(expectedST, st);
+    }
+
+    @Test
+    public void test_letterSameWeight(){
+        SearchTerm[] st = ac2.topKMatches("M", 4);
+
+        SearchTerm mum = new SearchTerm("Mumbai, India", 12691836);
+        SearchTerm mex = new SearchTerm("Mexico City, Distrito Federal, Mexico", 12294193);
+        SearchTerm mano = new SearchTerm("Manola, Philippines", 10444527);
+        SearchTerm mani = new SearchTerm("Manila, Philippines", 10444527);
+
+        SearchTerm[] expectedST = new SearchTerm[] {mum, mex, mano, mani};
+
+        Assertions.assertArrayEquals(expectedST, st);
     }
 
     @Test
@@ -46,20 +77,20 @@ public class Task3PublicTests {
     }
 
     @Test
-    public void test_Sanxx() {
-        SearchTerm[] st = ac.topKMatches("San");
+    public void test_Sunny() {
+        SearchTerm[] st = ac.topKMatches("Sunny");
 
-        SearchTerm santiago = new SearchTerm("Santiago, Chile", 4837295);
-        SearchTerm santoDomingo = new SearchTerm("Santo Domingo, Dominican Republic", 2201941);
-        SearchTerm sanaa = new SearchTerm("Sanaa, Yemen", 1937451);
-        SearchTerm santaCruz = new SearchTerm("Santa Cruz de la Sierra, Bolivia", 1364389);
-        SearchTerm sanAntonio = new SearchTerm("San Antonio, Texas, United States", 1327407);
-        SearchTerm sanDiego = new SearchTerm("San Diego, California, United States", 1307402);
-        SearchTerm santiagoDe = new SearchTerm("Santiago de los Caballeros, Dominican Republic", 1200000);
-        SearchTerm sanJose = new SearchTerm("San Jose, California, United States", 945942);
-        SearchTerm sanFran = new SearchTerm("San Francisco, California, United States", 805235);
-        SearchTerm sanMig = new SearchTerm("San Miguel de Tucumán, Argentina", 781023);
-        SearchTerm[] expectedST = new SearchTerm[] { santiago, santoDomingo, sanaa, santaCruz, sanAntonio, sanDiego, santiagoDe, sanJose, sanFran, sanMig };
+        SearchTerm Sunny1 = new SearchTerm("Sunnyvale, California, United States", 140081);
+        SearchTerm Sunny2 = new SearchTerm("Sunny Isles Beach, Florida, United States", 20832);
+        SearchTerm Sunny3 = new SearchTerm("Sunnybank, Queensland, Australia", 16108);
+        SearchTerm Sunny4 = new SearchTerm("Sunnyside, Washington, United States", 15858);
+        SearchTerm Sunny5 = new SearchTerm("Sunnyside, Oregon, United States", 6791);
+        SearchTerm Sunny6 = new SearchTerm("Sunnyslope, California, United States", 5153);
+        SearchTerm Sunny7 = new SearchTerm("Sunnyvale, Texas, United States", 5130);
+        SearchTerm Sunny8 = new SearchTerm("Sunnyside, California, United States", 4235);
+        SearchTerm Sunny9 = new SearchTerm("Sunnyslope, Washington, United States", 3252);
+        SearchTerm Sunny10 = new SearchTerm("Sunnyside-Tahoe City, California, United States", 1557);
+        SearchTerm[] expectedST = new SearchTerm[] { Sunny1, Sunny2, Sunny3, Sunny4, Sunny5, Sunny6, Sunny7, Sunny8, Sunny9, Sunny10 };
 
         Assertions.assertArrayEquals(expectedST, st);
     }
@@ -69,6 +100,29 @@ public class Task3PublicTests {
         int matches = ac.numberOfMatches("Val-");
 
         Assertions.assertEquals(5, matches);
+    }
+
+    @Test
+    public void test_San_3() {
+        SearchTerm[] st = ac.topKMatches("San", 3);
+
+        SearchTerm santiago = new SearchTerm("Santiago, Chile", 4837295);
+        SearchTerm santoDomingo = new SearchTerm("Santo Domingo, Dominican Republic", 2201941);
+        SearchTerm sanaa = new SearchTerm("Sanaa, Yemen", 1937451);
+        SearchTerm[] expectedST = new SearchTerm[] { santiago, santoDomingo, sanaa };
+
+        Assertions.assertArrayEquals(expectedST, st);
+    }
+
+    @Test
+    public void testCities2() {
+        SearchTerm[] st = ac.topKMatches("Saint Petersburg", 3);
+
+        SearchTerm russia = new SearchTerm("Saint Petersburg, Russia", 4039745);
+        SearchTerm usa = new SearchTerm("Saint Petersburg, Florida, United States", 244769);
+        SearchTerm[] expectedST = new SearchTerm[] { russia, usa };
+
+        Assertions.assertArrayEquals(expectedST, st);
     }
 
 }

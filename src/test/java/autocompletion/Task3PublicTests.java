@@ -20,7 +20,6 @@ public class Task3PublicTests {
         ac = new AutoCompletor(cityAnalyzer.getSearchTerms());
     }
 
-    //producing an error
     @Test
     public void test_Trichi() {
         SearchTerm[] st = ac.allMatches("Trichi");
@@ -29,10 +28,9 @@ public class Task3PublicTests {
 
         SearchTerm[] expectedST = new SearchTerm[] {Trichiana};
 
-        Assertions.assertEquals(expectedST, st);
+        Assertions.assertArrayEquals(expectedST, st);
     }
 
-    //test not working again???/
     @Test
     public void test_Westmor() {
         SearchTerm[] st = ac.allMatches("Westmor");
@@ -44,7 +42,7 @@ public class Task3PublicTests {
 
         SearchTerm[] expectedST = new SearchTerm[] {Westmor1, Westmor2, Westmor3, Westmor4};
 
-        Assertions.assertEquals(expectedST, st);
+        Assertions.assertArrayEquals(expectedST, st);
     }
 
     @Test

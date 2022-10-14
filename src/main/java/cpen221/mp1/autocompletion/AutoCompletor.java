@@ -83,5 +83,18 @@ public class AutoCompletor {
         return allMatches(prefix).length;
     }
 
+//    @Override
+//    public boolean equals (Object o) {
+//        if (this == o) {
+//            return true;
+//        }
+//        if(!(o instanceof AutoCompletor)) {
+//            return false;
+//        }
+//
+//        AutoCompletor c = (AutoCompletor) o;
+//        return this.i.equals(c.i);
+//    }
+
 }
 

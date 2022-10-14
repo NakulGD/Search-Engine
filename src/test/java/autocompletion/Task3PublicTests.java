@@ -20,10 +20,36 @@ public class Task3PublicTests {
         ac = new AutoCompletor(cityAnalyzer.getSearchTerms());
     }
 
+    //producing an error
+    @Test
+    public void test_Trichi() {
+        SearchTerm[] st = ac.allMatches("Trichi");
+
+        SearchTerm Trichiana = new SearchTerm("Trichiana, Italy", 4498);
+
+        SearchTerm[] expectedST = new SearchTerm[] {Trichiana};
+
+        Assertions.assertEquals(expectedST, st);
+    }
+
+    //test not working again???/
+    @Test
+    public void test_Westmor() {
+        SearchTerm[] st = ac.allMatches("Westmor");
+
+        SearchTerm Westmor1 = new SearchTerm("Westmorland, California, United States", 2225);
+        SearchTerm Westmor2 = new SearchTerm("Westmoreland, Tennessee, United States", 2206);
+        SearchTerm Westmor3 = new SearchTerm("Westmoreland, New Hampshire, United States", 1861);
+        SearchTerm Westmor4 = new SearchTerm("Westmoreland, Kansas, United States", 778);
+
+        SearchTerm[] expectedST = new SearchTerm[] {Westmor1, Westmor2, Westmor3, Westmor4};
+
+        Assertions.assertEquals(expectedST, st);
+    }
+
     @Test
     public void test_Sanxx() {
         SearchTerm[] st = ac.topKMatches("San");
-        SearchTerm[] test1 = ac.allMatches("San");
 
         SearchTerm santiago = new SearchTerm("Santiago, Chile", 4837295);
         SearchTerm santoDomingo = new SearchTerm("Santo Domingo, Dominican Republic", 2201941);

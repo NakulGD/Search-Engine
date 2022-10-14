@@ -29,7 +29,7 @@ public class Task3PublicTests {
 
         SearchTerm[] expectedST = new SearchTerm[] {Trichiana};
 
-        Assertions.assertEquals(expectedST, st);
+        Assertions.assertTrue(expectedST.equals(st));
     }
 
     //test not working again???/

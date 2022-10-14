@@ -18,7 +18,7 @@ import java.util.List;
    the different components of the dataset.
  */
 
-public class DataAnalyzer {
+public class    DataAnalyzer {
 
     private static final String citiesData = "data/cities.txt";
     private SearchTerm[] searchTerms;
@@ -47,17 +47,17 @@ public class DataAnalyzer {
         return searchTerms; // careful here!
     }
 
-    public static void main(String[] args) {
-        DataAnalyzer da = new DataAnalyzer(citiesData);
-        SearchTerm[] searchTerms = da.searchTerms;
-        AutoCompletor ac = new AutoCompletor(searchTerms);
-        final int k = 10;
-        SwingUtilities.invokeLater(
-                new Runnable() {
-                    public void run() {
-                        new AutoCompletorGUI(searchTerms, k).setVisible(true);
-                    }
-                }
-        );
-    }
+//    public static void main(String[] args) {
+//        DataAnalyzer da = new DataAnalyzer(citiesData);
+//        SearchTerm[] searchTerms = da.searchTerms;
+//        AutoCompletor ac = new AutoCompletor(searchTerms);
+//        final int k = 10;
+//        SwingUtilities.invokeLater(
+//                new Runnable() {
+//                    public void run() {
+//                        new AutoCompletorGUI(searchTerms, k).setVisible(true);
+//                    }
+//                }
+//        );
+//    }
 }

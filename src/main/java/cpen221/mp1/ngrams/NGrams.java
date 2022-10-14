@@ -1,6 +1,5 @@
 package cpen221.mp1.ngrams;
 
-import java.io.FileNotFoundException;
 import java.text.BreakIterator;
 import java.util.*;
 import java.util.List;
@@ -10,8 +9,6 @@ public class NGrams {
 
     String[] line;
     String[] currentLine;
-
-
 
     /**
      * Create an NGrams object
@@ -35,7 +32,7 @@ public class NGrams {
      * @return the total number of 1-grams,
      * 2-grams, ..., n-grams
      */
-    public long getTotalNGramCount(int n) throws Exception {
+    public long getTotalNGramCount(int n) throws IllegalArgumentException {
 
         int count = 0;
 
@@ -45,8 +42,7 @@ public class NGrams {
 
         //Check whether inputted n is valid
         if(n < 1 || n > listOfGrams.size()) {
-
-            throw new Exception("Invalid input");
+            throw new IllegalArgumentException();
         }
 
         //Iterate through each entry in the list up to n
@@ -63,7 +59,7 @@ public class NGrams {
      * @return a list of n-grams and their associated counts,
      * with the i-th entry being all the (i+1)-grams and their counts
      */
-    public List<Map<String, Long>> getAllNGrams() throws Exception {
+    public List<Map<String, Long>> getAllNGrams() throws IllegalArgumentException {
 
         //Initialize List of Maps
         List<Map<String, Long>> listOfGrams = new ArrayList<Map<String, Long>>();
@@ -75,8 +71,7 @@ public class NGrams {
 
             //Throw exception in the case of empty array
             if(this.currentLine.length == 0) {
-            
-                throw new Exception("Invalid String");
+                throw new IllegalArgumentException();
             }
 
             //Iterate 1 through to longest possible gram, add map to list
@@ -117,14 +112,11 @@ public class NGrams {
         for(int i = 0; i < listOfGrams.size(); i++){
             if(listOfGrams.get(i).size() == 0){
                 listOfGrams.remove(i);
-
                 i--;
             }
         }
         return listOfGrams;
     }
-
-
 
     /**
      * Obtain a String[] array where indices are individual words of input String with punctuation and spaces removed
@@ -146,8 +138,6 @@ public class NGrams {
             }
         }
 
-        
-
         for (int i = 0; i < words.size(); i++) {
             if(words.get(i).equals("")) {
                 words.remove(i);
@@ -162,12 +152,12 @@ public class NGrams {
 
     /**
      * Searches current line for occurrence of given NGram
+     *
      * @param line, the current line being searched through
      * @param gram, the gram being searched for
      * @return number of occurrences of the gram in the line
      */
-    public static long numOccurences(String line, String gram) throws Exception {
-
+    public static long numOccurences(String line, String gram) throws IllegalArgumentException {
 
         String[] lineArray = getWords(line);
         String[] gramArray = getWords(gram);
@@ -176,11 +166,11 @@ public class NGrams {
 
         //Error if gram length is longer than line length
         if(gramArray.length > lineArray.length) {
-            throw new Exception("Invalid input");
+            throw new IllegalArgumentException();
         }
 
         //Iterate through line to find matching terms of length equal to gram length
-        for(int i = 0; i < lineArray.length - gramArray.length; i++) {
+        for(int i = 0; i <= lineArray.length - gramArray.length; i++) {
             count = 0;
             for(int j = 0; j < gramArray.length; j++) {
                 if(lineArray[i + j].equals(gramArray[j])) {

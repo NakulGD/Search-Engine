@@ -26,7 +26,6 @@ public class DataAnalyzer {
         nextLine = dw.nextLine();
 
         //Add each line to the List of Strings
-
         while(nextLine != null) {
             stringList.add(nextLine);
             nextLine = dw.nextLine();
@@ -90,50 +89,6 @@ public class DataAnalyzer {
         }
 
         return histogram;
-    }
-
-    /**
-     * Display the histogram data as a chart
-     * @param histogram with entries for men-low (ML),
-     * women-low (WL), men-medium (MM), women-medium (WM),
-     * men-high (MH), and women-high (WH)
-     */
-    public void showHistogramChart(Map<String, Long> histogram) {
-        // TODO: This is an optional component but is
-        //  instructive in that graphing may not be that hard!
-        //  See the histogram package.
-    }
-
-    /**
-     * Searches current line for occurrence of given NGram
-     * @param line, the current line being searched through
-     * @param gram, the gram being searched for
-     * @return true or false based on whether the gram is in the current line
-     */
-    public boolean containsGram(String line, String gram) throws Exception {
-
-        String[] lineArray = NGrams.getWords(line);
-        String[] gramArray = NGrams.getWords(gram);
-        int count = 0;
-
-        //Error if gram length is longer than line length
-        if(gramArray.length > lineArray.length) {
-            throw new Exception("Invalid input");
-        }
-
-        //Iterate through line to find matching terms of length equal to gram length
-        for(int i = 0; i < lineArray.length - gramArray.length; i++) {
-            count = 0;
-            for(int j = 0; j < gramArray.length; j++) {
-                if(lineArray[i + j].equals(gramArray[j])) {
-                    count++;
-                }
-            }
-            if(count == gramArray.length) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

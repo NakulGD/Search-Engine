@@ -7,13 +7,15 @@ import org.junit.jupiter.api.Test;
 import java.io.FileNotFoundException;
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 public class Task1PublicTests {
-    @Test
-    public void test_NGrams1() throws Exception {
-        String[] test = {"The the big boy."};
 
+    @Test
+    public void testNGrams1() throws Exception {
+        String[] test = {"The the big boy."};
 
         List<Map<String, Long>> expectedListofMaps = new ArrayList<Map<String, Long>>();
         expectedListofMaps.add(new HashMap<String, Long>());
@@ -38,7 +40,7 @@ public class Task1PublicTests {
     }
 
     @Test
-    public void test_NGrams2() throws Exception {
+    public void testNGrams2() throws Exception {
 
         String[] test = {"The big boy and the big girl jumped on foo."};
 
@@ -119,56 +121,15 @@ public class Task1PublicTests {
         assertEquals(expectedListofMaps, ngrams1.getAllNGrams());
     }
 
-//    @Test
-//    public void test_NGrams3() throws Exception {
-//        String[] test = {"Aa a a aa a a a%a"};
-//
-//        List<Map<String, Long>> expectedListofMaps = new ArrayList<Map<String, Long>>();
-//        expectedListofMaps.add(new HashMap<String, Long>());
-//        expectedListofMaps.get(0).put("aa", 2L);
-//        expectedListofMaps.get(0).put("a", 6L);
-//
-//        expectedListofMaps.add(new HashMap<String, Long>());
-//        expectedListofMaps.get(1).put("aa a", 2L);
-//        expectedListofMaps.get(1).put("a a", 4L);
-//        expectedListofMaps.get(1).put("a aa", 1L);
-//
-//        expectedListofMaps.add(new HashMap<String, Long>());
-//        expectedListofMaps.get(2).put("aa a a", 2L);
-//        expectedListofMaps.get(2).put("a a aa", 1L);
-//        expectedListofMaps.get(2).put("a aa a", 1L);
-//        expectedListofMaps.get(2).put("a a a", 2L);
-//
-//        expectedListofMaps.add(new HashMap<String, Long>());
-//        expectedListofMaps.get(3).put("aa a a aa", 1L);
-//        expectedListofMaps.get(3).put("a a aa a", 1L);
-//        expectedListofMaps.get(3).put("a aa a a", 1L);
-//
-//        expectedListofMaps.add(new HashMap<String, Long>());
-//        expectedListofMaps.get(4).put("aa a a aa a", 1L);
-//        expectedListofMaps.get(4).put("a a aa a a", 1L);
-//        expectedListofMaps.get(4).put("a aa a a a", 1L);
-//        expectedListofMaps.get(4).put("aa a a a a", 1L);
-//
-//        expectedListofMaps.add(new HashMap<String, Long>());
-//        expectedListofMaps.get(5).put("aa a a aa a a", 1L);
-//        expectedListofMaps.get(5).put("a a aa a a a", 1L);
-//        expectedListofMaps.get(5).put("a aa a a a a", 1L);
-//
-//        expectedListofMaps.add(new HashMap<String, Long>());
-//        expectedListofMaps.get(6).put("aa a a aa a a a", 1L);
-//        expectedListofMaps.get(6).put("a a aa a a a a", 1L);
-//
-//        expectedListofMaps.add(new HashMap<String, Long>());
-//        expectedListofMaps.get(7).put("aa a a aa a a a a", 1L);
-//
-//        NGrams ngrams1 = new NGrams(test);
-//        assertEquals(expectedListofMaps, ngrams1.getAllNGrams());
-//    }
+    @Test
+    public void testNGramsException() throws IllegalArgumentException {
+        String[] test = {""};
+        NGrams grams = new NGrams(test);
+        assertThrows(IllegalArgumentException.class, () -> grams.getAllNGrams());
+    }
 
     @Test
-    public void test_TotalNGramCount1() throws Exception {
-
+    public void testTotalNGramCount1() throws IllegalArgumentException {
         String[] test = {"The the big boy."};
 
         NGrams ngrams1 = new NGrams(test);
@@ -177,8 +138,7 @@ public class Task1PublicTests {
     }
 
     @Test
-    public void test_TotalNGramCount2() throws Exception {
-
+    public void testTotalNGramCount2() throws IllegalArgumentException {
         String[] test = {"The the big boy."};
 
         NGrams ngrams1 = new NGrams(test);
@@ -187,8 +147,7 @@ public class Task1PublicTests {
     }
 
     @Test
-    public void test_TotalNGramCount3() throws Exception {
-
+    public void testTotalNGramCount3() throws IllegalArgumentException {
         String[] test = {"The the big boy."};
 
         NGrams ngrams1 = new NGrams(test);
@@ -197,8 +156,7 @@ public class Task1PublicTests {
     }
 
     @Test
-    public void test_TotalNGramCount4() throws Exception {
-
+    public void testTotalNGramCount4() throws IllegalArgumentException {
         String[] test = {"The the big boy."};
 
         NGrams ngrams1 = new NGrams(test);
@@ -207,8 +165,7 @@ public class Task1PublicTests {
     }
 
     @Test
-    public void test_TotalNGramCount5() throws Exception {
-
+    public void testTotalNGramCount5() throws IllegalArgumentException {
         String sentence1 = "Test sentence.";
         String sentence2 = "Also test.";
         String[] test = {sentence1, sentence2};
@@ -228,6 +185,60 @@ public class Task1PublicTests {
     }
 
     @Test
+    public void TestTotalNGramCountException1() throws IllegalArgumentException {
+        String text1 = "the blue cow jumped over the blue cow moon!";
+        String text2 = "The Blue Period of Picasso is the period between 1900 and 1904, when he painted essentially monochromatic paintings in shades of blue and blue-green, only occasionally warmed by other colors.";
+
+        long expectedCount = 130;
+
+        NGrams ng = new NGrams(new String[]{text1, text2});
+
+        assertThrows(Exception.class, () -> ng.getTotalNGramCount(-4));
+    }
+
+    @Test
+    public void TestTotalNGramCountException2() throws IllegalArgumentException {
+        String text1 = "the blue cow jumped over the blue cow moon!";
+        String text2 = "The Blue Period of Picasso is the period between 1900 and 1904, when he painted essentially monochromatic paintings in shades of blue and blue-green, only occasionally warmed by other colors.";
+
+        long expectedCount = 130;
+
+        NGrams ng = new NGrams(new String[]{text1, text2});
+
+        assertThrows(Exception.class, () -> ng.getTotalNGramCount(ng.getAllNGrams().size() + 1));
+    }
+
+    @Test
+    public void simpleTestCount() throws IllegalArgumentException {
+
+        String text1 = "the blue cow jumped over the blue cow moon!";
+        String text2 = "The Blue Period of Picasso is the period between 1900 and 1904, when he painted essentially monochromatic paintings in shades of blue and blue-green, only occasionally warmed by other colors.";
+
+        long expectedCount = 130;
+
+        NGrams ng = new NGrams(new String[]{text1, text2});
+
+        assertEquals(expectedCount, ng.getTotalNGramCount(4));
+    }
+
+    @Test
+    public void simpleTestGetNGrams() throws IllegalArgumentException {
+        String text1 = "great class";
+        String text2 = "good textbook written by him";
+
+        List<Map<String, Long>> expectedNGrams = List.of(
+                Map.of("great", 1L, "class", 1L, "good", 1L, "textbook", 1L, "written", 1L, "by", 1L, "him", 1L),
+                Map.of("great class", 1L, "good textbook", 1L, "textbook written", 1L, "written by", 1L, "by him", 1L),
+                Map.of("good textbook written", 1L, "textbook written by", 1L, "written by him", 1L),
+                Map.of("good textbook written by", 1L, "textbook written by him", 1L),
+                Map.of("good textbook written by him", 1L)
+        );
+
+        NGrams ng = new NGrams(new String[]{text1, text2});
+        assertEquals(expectedNGrams, ng.getAllNGrams());
+    }
+
+    @Test
     public void testReadFile() throws FileNotFoundException {
         List<String> testList = new ArrayList<String>();
         testList.add("5.0,W,jans is great she is a fantastic teacher and her class was both interesting and lively she does expect you to read a lot out of the book and other sources as well she is a very lively teacher and you can tell she loves the subject she teaches");
@@ -240,15 +251,6 @@ public class Task1PublicTests {
     }
 
     @Test
-    public void testSearchForNGramInLine1() throws Exception {
-        String fileName = "data/test_data.txt";
-
-        DataAnalyzer analyzer = new DataAnalyzer(fileName);
-
-        assertTrue(analyzer.containsGram(analyzer.stringList.get(0), "jans is great"));
-    }
-
-    @Test
     public void testGetGender1() throws Exception {
         String fileName = "data/test_data.txt";
 
@@ -258,12 +260,33 @@ public class Task1PublicTests {
     }
 
     @Test
-    public void testGetScore1() throws Exception {
+    public void testGetScore1() throws FileNotFoundException {
         String fileName = "data/test_data.txt";
 
         DataAnalyzer analyzer = new DataAnalyzer(fileName);
 
         assertEquals(analyzer.getRating(analyzer.stringList.get(0)), 5.0);
+    }
+
+    @Test
+    public void testGetOccurences1() throws IllegalArgumentException {
+        String big = "This sentence is a test sentence.";
+        String gram = "sentence";
+        assertEquals(NGrams.numOccurences(big, gram), 2);
+    }
+
+    @Test
+    public void testGetOccurences2() throws IllegalArgumentException {
+        String big = "This sentence has repeated grams which is sentence has and also it has sentence has.";
+        String gram = "sentence has";
+        assertEquals(NGrams.numOccurences(big, gram), 3);
+    }
+
+    @Test
+    public void testGetOccurencesException() throws IllegalArgumentException {
+        String big = "The big big boy.";
+        String gram = "this is a gram that is longer than the sentence";
+        assertThrows(Exception.class, () -> NGrams.numOccurences(big, gram));
     }
 }
 

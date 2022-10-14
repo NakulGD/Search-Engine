@@ -1,6 +1,14 @@
 package ngrams;
 
 import cpen221.mp1.ngrams.NGrams;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import cpen221.mp1.ngrams.NGrams;
 import cpen221.mp1.ratemyprofessor.DataAnalyzer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,7 +34,7 @@ public class Task1SmokeTests {
     }
 
     @Test
-    public void simpleTestGetNGrams() throws Exception {
+    public void simpleTestGetNGrams() throws Exception{
         String text1 = "great class";
         String text2 = "good textbook written by him";
 

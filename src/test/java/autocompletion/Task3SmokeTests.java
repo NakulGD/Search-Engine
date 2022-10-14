@@ -42,4 +42,5 @@ public class Task3SmokeTests {
 
         Assertions.assertArrayEquals(expectedST, st);
     }
+
 }

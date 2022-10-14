@@ -1,24 +1,29 @@
 package cpen221.mp1.sentimentanalysis;
 
-import cpen221.mp1.autocompletion.gui.In;
 import cpen221.mp1.datawrapper.DataWrapper;
 
 import java.io.FileNotFoundException;
 import java.text.BreakIterator;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class SentimentAnalyzer {
 
 
 
-        List<Map<String, Integer>> bagOfWords = new ArrayList<>();
-        String[] line;
-        String[] currentLine;
+        List<Map<String, Float>> bagOfWords = new ArrayList<>();
         public DataWrapper dw;
         public List<String> stringList = new ArrayList<String>();
+        public List<Float> ratingList = new ArrayList<>();
+        int totalWords;
+        HashMap<String, Float> rating1 = new HashMap<>();
+        HashMap<String, Float> rating1_5 = new HashMap<>();
+        HashMap<String, Float> rating2 = new HashMap<>();
+        HashMap<String, Float> rating2_5 = new HashMap<>();
+        HashMap<String, Float> rating3 = new HashMap<>();
+        HashMap<String, Float> rating3_5 = new HashMap<>();
+        HashMap<String, Float> rating4 = new HashMap<>();
+        HashMap<String, Float> rating4_5 = new HashMap<>();
+        HashMap<String, Float> rating5 = new HashMap<>();
         /**
          *
          * @param filename
@@ -43,89 +48,63 @@ public class SentimentAnalyzer {
         public SentimentAnalyzer(String filename) throws FileNotFoundException {
                 DataWrapper dw = new DataWrapper(filename);
 
-                //initializes an empty ArrayList
-                for(int i = 0; i < 9; i++) {
-                        bagOfWords.add(null);
-                }
-
                 //Skip the first line of the file
                 String nextLine = dw.nextLine();
                 nextLine = dw.nextLine();
 
+                bagOfWords.add(rating1);
+                bagOfWords.add(rating1_5);
+                bagOfWords.add(rating2);
+                bagOfWords.add(rating2_5);
+                bagOfWords.add(rating3);
+                bagOfWords.add(rating3_5);
+                bagOfWords.add(rating4);
+                bagOfWords.add(rating4_5);
+                bagOfWords.add(rating5);
+
                 //Add each line to the List of Strings
                 while(nextLine != null) {
                         stringList.add(nextLine);
-
                         //Obtains review text and rating of each line
                         String[] review = getReview(nextLine);
-                        var rating = getRating(nextLine);
 
-                        //index position of HashMap in bagOfWords List
-                        var position = (int) (2*(rating - 1));
+                        totalWords += review.length;
+                        float rating = getRating(nextLine);
+                        ratingList.add(rating);
+                        if (rating == 1F) {
+                                addToHashMap(review, rating1);
 
-                        //Creates HashMap of 1-grams in line, adds the 1-grams for each rating to the bagOfWords List
-                        var map = get1Grams(review);
-                        bagOfWords.set(position,map);
+                        } else if (rating == 1.5F) {
+                                addToHashMap(review, rating1_5);
+
+                        } else if(rating == 2.0F) {
+                                addToHashMap(review, rating2);
+
+                        } else if (rating == 2.5F) {
+                                addToHashMap(review, rating2_5);
+
+                        } else if (rating == 3.0F) {
+                                addToHashMap(review, rating3);
+
+                        } else if (rating == 3.5F) {
+                                addToHashMap(review, rating3_5);
+
+                        } else if (rating == 4.0F) {
+                                addToHashMap(review, rating4);
+
+                        } else if (rating == 4.5F) {
+                                addToHashMap(review, rating4_5);
+
+                        } else if (rating == 5.0F) {
+                                addToHashMap(review, rating5);
+                        }
+
                         nextLine = dw.nextLine();
                 }
 
-                List<Float> test = wordProbability("bad");
+                System.out.println("sadasd");
         }
 
-
-        //returns the probability of a single word in every rating, where the element at index i corresponds to
-        //the (i/2) + 1 rating.
-        //applies Laplacian smoothing if word is not in the Map
-        public List<Float> wordProbability (String wordToFind){
-                List<Float> wordProb = new ArrayList<>();
-
-                for (int i = 0; i < bagOfWords.size(); i++) {
-                        Map<String, Integer> mapToCheck = bagOfWords.get(i);
-
-                        //If there's a rating missing, the List will set a value of 0 to avoid adding values to the index corresponding to that rating
-                        if (bagOfWords.get(i) == null) {
-                                wordProb.add(i, 0F);
-                        } else {
-
-                                float count;
-                                float sum = 0;
-
-                                for (int j : mapToCheck.values()) {
-                                        sum += j;
-                                }
-
-                                if (mapToCheck.containsKey(wordToFind)) {
-                                        count = mapToCheck.get(wordToFind);
-                                } else {
-
-                                        count = 1;
-                                        sum += mapToCheck.size();
-                                }
-
-                                float likelihood = count / sum;
-                                wordProb.add(likelihood);
-                        }
-                }
-
-                return wordProb;
-        }
-
-
-        //returns the number of occurrences of given rating relative to the total number of reviews
-        public float ratingProbability (double inputRating) {
-                float totalReviews = stringList.size();
-                float count = 0;
-
-                for (int i = 0; i < stringList.size(); i++) {
-                        double currentRating = getRating(stringList.get(i));
-                        if (currentRating == inputRating) {
-                                count++;
-                        }
-                }
-
-                float ratingProb = count/totalReviews;
-                return ratingProb;
-        }
 
 
         /**
@@ -134,45 +113,148 @@ public class SentimentAnalyzer {
          * @return
          */
         public float getPredictedRating(String reviewText) {
-            // TODO: Implement this method for predicting
-            // the rating given the text of a review using
-            // the simple Bayesian approach outlined in the
-            // MP statement. Also write the specification for
-            // the method.
-            return 0;
-        }
+                String[] reviewTextArray = getWords(reviewText);
+                float wordP;
+                float ratingP;
+                float wordR;
+                float maxVal = -1;
+                float predictedRating = -1;
 
-        
 
-       public Map<String, Integer> get1Grams (String[] line) {
-                Map<String, Integer> oneGrams = new HashMap<>();
+                for(float i = 1; i < 5.5; i += 0.5) {
+                        wordR = PWordRating(reviewTextArray, i);
+                        wordP = PBagOfWords(reviewTextArray);
+                        ratingP = PRating(i);
 
-                for (int i = 0; i < line.length; i++) {
-                        String word = line[i];
-                        if(oneGrams.containsKey(word)) {
-                                int value = oneGrams.get(word);
-                                oneGrams.put(word, value + 1);
-                        } else {
-                                oneGrams.put(word, 1);
+                        System.out.println(i);
+                        System.out.println(wordR);
+                        System.out.println(wordP);
+                        System.out.println(ratingP);
+                        System.out.println("---------");
+
+                        float totalVal = (wordR * ratingP)/wordP;
+                        if (i == 1 || totalVal > maxVal) {
+                                maxVal = totalVal;
+                                predictedRating = i;
                         }
                 }
 
-                return oneGrams;
+                return predictedRating;
+        }
+
+
+        //returns the total number of occurrences of given rating relative to the total number of reviews (prior probability of said rating)
+        public float PRating (float inputRating) {
+                float totalReviews = ratingList.size();
+                float count = Collections.frequency(ratingList, inputRating);
+                return count/totalReviews;
+        }
+
+        //returns the product of all 1-gram words possibilities
+        public float PBagOfWords (String[] inputTextArray) {
+                float totalVal = 1;
+                for (int i = 0; i < inputTextArray.length; i++) {
+                        totalVal *= wordProb(inputTextArray[i]);
+                }
+                return totalVal;
+        }
+
+        //returns the product of all word|rating
+        public float PWordRating (String[] inputTextArray, float rating) {
+                float totalVal = 1;
+                for(int i = 0; i < inputTextArray.length; i++) {
+                        totalVal *= wordRating(rating, inputTextArray[i]);
+                }
+                return totalVal;
+        }
+
+        //returns (# of given word in file)/(# of total words in file)
+        public float wordProb (String word) {
+                float count = 0;
+
+                for (int i = 0; i < bagOfWords.size(); i++) {
+                        Map<String, Float> currentMap = bagOfWords.get(i);
+                        for (Map.Entry<String, Float> entry : currentMap.entrySet()) {
+                                if (currentMap.containsKey(word)) {
+                                        count = entry.getValue();
+                                }
+                        }
+                }
+
+                if (count == 0.0) {
+                        count = 1;
+                }
+
+                return count/totalWords;
+        }
+
+       //Returns (# of occurrences of word in a given rating)/(total # of words in the reviews with given rating)
+       public float wordRating (float rating, String word) {
+               int index = (int) (2*(rating - 1));
+               Map<String, Float> currentRatingMap = bagOfWords.get(index);
+               float count;
+               float totalCount = 0F;
+               for (float vals : currentRatingMap.values()) {
+                       totalCount += vals;
+               }
+
+               if (currentRatingMap.containsKey(word)) {
+                       count = currentRatingMap.get(word);
+               } else {
+                       count = 1;
+                       totalCount += 1;
+
+                       //POSSIBLE SOURCE OF ERROR
+               }
+
+               return count/totalCount;
        }
 
 
-        public double getRating(String line) {
+       //The following are helper methods for the constructor
+
+
+        private void addToHashMap(String[] inputArray, Map<String, Float> inputMap) {
+                for(int i = 0; i < inputArray.length; i++) {
+                        String currentWord = inputArray[i];
+                        if(inputMap.containsKey(currentWord)) {
+                                inputMap.put(currentWord, inputMap.get(currentWord) + 1);
+                        }
+                        else {
+                                inputMap.put(currentWord, 1F);
+                        }
+                }
+
+        }
+
+        private float getRating(String line) {
                 String[] lineArray = getWords(line);
-                double rating = Double.parseDouble(lineArray[0]);
+                float rating = Float.parseFloat(lineArray[0]);
                 return rating;
         }
 
-        public String[] getReview(String line) {
+        private String[] getReview(String line) {
                 String[] reviewArray = getWords(line.substring(6));
                 return reviewArray;
         }
 
-        public String[] getWords(String text) {
+        private Map<String, Float> get1Grams (String[] line) {
+                Map<String, Float> oneGrams = new HashMap<>();
+
+                for (int i = 0; i < line.length; i++) {
+                        String word = line[i];
+                        if(oneGrams.containsKey(word)) {
+                                Float value = oneGrams.get(word);
+                                oneGrams.put(word, value + 1);
+                        } else {
+                                oneGrams.put(word, 1F);
+                        }
+                }
+
+                return oneGrams;
+        }
+
+        private String[] getWords(String text) {
                 ArrayList<String> words = new ArrayList<>();
                 BreakIterator wb = BreakIterator.getWordInstance();
                 wb.setText(text);
@@ -198,8 +280,6 @@ public class SentimentAnalyzer {
                 words.toArray(wordsArray);
                 return wordsArray;
         }
-
-
     }
 
 

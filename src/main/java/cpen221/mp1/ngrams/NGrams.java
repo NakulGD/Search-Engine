@@ -3,14 +3,22 @@ package cpen221.mp1.ngrams;
 import java.text.BreakIterator; 
 import java.util.*; 
 import java.util.List; 
-import java.util.Map; 
+import java.util.Map;
 
+/**
+ * @author Felix Ma
+ *
+ * Represents a piece of text to be analyzed.
+ */
 public class NGrams {
 
+    /**
+     * Array containing Strings from which 1Grams, 2Grams, etc. will be extracted.
+     */
     String[] lines; 
 
     /**
-     * Create an NGrams object
+     * Create an NGrams object.
      *
      * @param text all the text to analyze and create n-grams from; 
      *             is not null and is not empty.
@@ -27,7 +35,7 @@ public class NGrams {
      * obtain sum_{i=1}^{n} m_i.
      *
      * @return the total number of 1-grams,
-     * 2-grams, ..., n-grams
+     *         2-grams, ..., n-grams.
      */
     public long getTotalNGramCount(int n) throws IllegalArgumentException {
 
@@ -50,9 +58,8 @@ public class NGrams {
      * Get the n-grams, as a List, with the i-th entry being
      * all the (i+1)-grams and their counts.
      * @return a list of n-grams and their associated counts,
-     * with the i-th entry being all the (i+1)-grams and their counts
+     * with the i-th entry being all the (i+1)-grams and their counts.
      */
-    @SuppressWarnings("checkstyle:ModifiedControlVariable")
     public List<Map<String, Long>> getAllNGrams() throws IllegalArgumentException {
 
         List<Map<String, Long>> listOfGrams = new ArrayList<>(); 
@@ -101,11 +108,10 @@ public class NGrams {
     }
 
     /**
-     * Obtain a String[] array where indices are individual words of input String with punctuation and spaces removed
-     * @param text which is a line of text
-     * @return a String[] array where indices are individual words of input String with punctuation and spaces removed
+     * Obtain a String[] array where indices are individual words of input String with punctuation and spaces removed.
+     * @param text which is a line of text.
+     * @return a String[] array where indices are individual words of input String with punctuation and spaces removed.
      */
-    @SuppressWarnings("checkstyle:ModifiedControlVariable")
     public static String[] getWords(String text) {
         ArrayList<String> words = new ArrayList<>(); 
         BreakIterator wb = BreakIterator.getWordInstance(); 
@@ -136,9 +142,9 @@ public class NGrams {
     /**
      * Searches current line for occurrence of given NGram
      *
-     * @param line, the current line being searched through
-     * @param gram, the gram being searched for
-     * @return number of occurrences of the gram in the line
+     * @param line, the current line being searched through.
+     * @param gram, the gram being searched for.
+     * @return number of occurrences of the gram in the line.
      */
     public static long numOccurences(String line, String gram) throws IllegalArgumentException {
 

@@ -36,7 +36,7 @@ public class DataWrapper {
      * Resets the file scanner to start at the beginning of the file
      */
     public void resetScanner() {
-        dataReader= new In(dataFile);
+        dataReader = new In(dataFile);
     }
 
 }

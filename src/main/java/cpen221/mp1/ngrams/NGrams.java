@@ -35,11 +35,11 @@ public class NGrams {
 
         List<Map<String, Long>> listOfGrams = this.getAllNGrams();
 
-        if(n < 1 || n > listOfGrams.size()) {
+        if (n < 1 || n > listOfGrams.size()) {
             throw new IllegalArgumentException();
         }
 
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             totalCount += listOfGrams.get(i).size();
         }
 
@@ -52,22 +52,23 @@ public class NGrams {
      * @return a list of n-grams and their associated counts,
      * with the i-th entry being all the (i+1)-grams and their counts
      */
+    @SuppressWarnings("checkstyle:ModifiedControlVariable")
     public List<Map<String, Long>> getAllNGrams() throws IllegalArgumentException {
 
-        List<Map<String, Long>> listOfGrams = new ArrayList<Map<String, Long>>();
+        List<Map<String, Long>> listOfGrams = new ArrayList<>();
 
-        for(int i = 0; i < lines.length; i++){
+        for (int i = 0; i < lines.length; i++) {
             String[] currentLine = getWords(this.lines[i]);
 
-            if(currentLine.length == 0) {
+            if (currentLine.length == 0) {
                 throw new IllegalArgumentException();
             }
 
-            for(int gramLength = 1; gramLength <= currentLine.length; gramLength++) {
+            for (int gramLength = 1; gramLength <= currentLine.length; gramLength++) {
 
-                listOfGrams.add(new HashMap<String, Long>());
+                listOfGrams.add(new HashMap<>());
 
-                for(int j = 0; j <= currentLine.length - gramLength; j++) {
+                for (int j = 0; j <= currentLine.length - gramLength; j++) {
 
                     StringBuilder current = new StringBuilder();
 
@@ -90,8 +91,8 @@ public class NGrams {
             }
         }
 
-        for(int i = 0; i < listOfGrams.size(); i++){
-            if(listOfGrams.get(i).size() == 0){
+        for (int i = 0; i < listOfGrams.size(); i++) {
+            if (listOfGrams.get(i).size() == 0) {
                 listOfGrams.remove(i);
                 i--;
             }
@@ -104,6 +105,7 @@ public class NGrams {
      * @param text which is a line of text
      * @return a String[] array where indices are individual words of input String with punctuation and spaces removed
      */
+    @SuppressWarnings("checkstyle:ModifiedControlVariable")
     public static String[] getWords(String text) {
         ArrayList<String> words = new ArrayList<>();
         BreakIterator wb = BreakIterator.getWordInstance();
@@ -120,7 +122,7 @@ public class NGrams {
         }
 
         for (int i = 0; i < words.size(); i++) {
-            if(words.get(i).equals("")) {
+            if (words.get(i).equals("")) {
                 words.remove(i);
                 i--;
             }
@@ -142,23 +144,22 @@ public class NGrams {
 
         String[] lineArray = getWords(line);
         String[] gramArray = getWords(gram);
-        int count = 0;
         long total = 0;
 
         //Error if gram length is longer than line length
-        if(gramArray.length > lineArray.length) {
+        if (gramArray.length > lineArray.length) {
             throw new IllegalArgumentException();
         }
 
         //Iterate through line to find matching terms of length equal to gram length
-        for(int i = 0; i <= lineArray.length - gramArray.length; i++) {
-            count = 0;
-            for(int j = 0; j < gramArray.length; j++) {
-                if(lineArray[i + j].equals(gramArray[j])) {
+        for (int i = 0; i <= lineArray.length - gramArray.length; i++) {
+            int count = 0;
+            for (int j = 0; j < gramArray.length; j++) {
+                if (lineArray[i + j].equals(gramArray[j])) {
                     count++;
                 }
             }
-            if(count == gramArray.length) {
+            if (count == gramArray.length) {
                 total++;
             }
         }

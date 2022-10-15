@@ -1,13 +1,7 @@
 package cpen221.mp1.autocompletion;
 
-import cpen221.mp1.ngrams.NGrams;
-import cpen221.mp1.ratemyprofessor.DataAnalyzer;
 import cpen221.mp1.searchterm.SearchTerm;
-
-import java.io.FileNotFoundException;
-import java.text.BreakIterator;
 import java.util.*;
-
 import static cpen221.mp1.searchterm.SearchTerm.byPrefixOrder;
 import static cpen221.mp1.searchterm.SearchTerm.byReverseWeightOrder;
 
@@ -28,9 +22,10 @@ public class AutoCompletor {
 
     /**
      * Returns all search terms that match the given prefix.
-     * @param prefix
+     * @param prefix String representing search query
      * @return all search terms that match the given prefix
      */
+    @SuppressWarnings("checkstyle:ModifiedControlVariable")
     public SearchTerm[] allMatches(String prefix) {
         List<SearchTerm> matches = new ArrayList<>();
         for (int i = 0; i < searchText.length; i++) {
@@ -43,24 +38,24 @@ public class AutoCompletor {
         matchesArray = matches.toArray(matchesArray);
 
         //order matchesArray by decreasing weight
-        for(int j = 0; j < matchesArray.length - 1; j++){
-            int comparisonWeight = byReverseWeightOrder().compare(matchesArray[j], matchesArray[j+1]);
-            if(comparisonWeight == -1){
+        for (int j = 0; j < matchesArray.length - 1; j++) {
+            int comparisonWeight = byReverseWeightOrder().compare(matchesArray[j], matchesArray[j + 1]);
+            if (comparisonWeight == -1) {
                 SearchTerm temp = matchesArray[j];
-                matchesArray[j] = matchesArray[j+1];
-                matchesArray[j+1] = temp;
+                matchesArray[j] = matchesArray[j + 1];
+                matchesArray[j + 1] = temp;
                 j = -1;
             }
         }
 
         //order matchesArray lexicographically if weights are the same
-        for(int k = 0; k < matchesArray.length - 1; k++){
-            int comparisonLexo = byPrefixOrder().compare(matchesArray[k], matchesArray[k+1]);
-            if (matchesArray[k].getWeight() == matchesArray[k+1].getWeight()) {
-                if (comparisonLexo < 0) {
+        for (int k = 0; k < matchesArray.length - 1; k++) {
+            int comparisonLexicographic = byPrefixOrder().compare(matchesArray[k], matchesArray[k + 1]);
+            if (matchesArray[k].getWeight() == matchesArray[k + 1].getWeight()) {
+                if (comparisonLexicographic < 0) {
                     SearchTerm temp = matchesArray[k];
-                    matchesArray[k] = matchesArray[k+1];
-                    matchesArray[k+1] = temp;
+                    matchesArray[k] = matchesArray[k + 1];
+                    matchesArray[k + 1] = temp;
                     k = -1;
                 }
             }
@@ -70,19 +65,18 @@ public class AutoCompletor {
 
     /**
      * Returns the top k search terms that match the given prefix.
-     * @param prefix
-     * @param limit
+     * @param prefix String representing search query
+     * @param limit Maximum matches returned
      * @return the top k search terms that match the given prefix
      * k is indicated by the parameter 'limit'.
      */
     public SearchTerm[] topKMatches(String prefix, int limit) {
         SearchTerm[] allMatches = allMatches(prefix);
-        if(allMatches.length < limit){
+        if (allMatches.length < limit) {
             return allMatches;
-        }
-        else{
+        } else {
             SearchTerm[] topKMatches = new SearchTerm[limit];
-            for(int i = 0; i < limit; i++){
+            for (int i = 0; i < limit; i++) {
                 topKMatches[i] = allMatches[i];
             }
             return topKMatches;
@@ -91,7 +85,7 @@ public class AutoCompletor {
 
     /**
      * Returns the top k search terms that match the given prefix.
-     * @param prefix
+     * @param prefix String representing search query
      * @return the top k search terms that match the given prefix
      * k is indicated by the constant DEFAULT_SEARCH_LIMIT.
      */
@@ -101,7 +95,7 @@ public class AutoCompletor {
 
     /**
      * Returns the number of search terms that match the given prefix.
-     * @param prefix
+     * @param prefix String representing search query
      * @return the number of search terms that match the given prefix
      */
     public int numberOfMatches(String prefix) {

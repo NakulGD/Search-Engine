@@ -1,16 +1,16 @@
-package cpen221.mp1.ratemyprofessor;
+package cpen221.mp1.ratemyprofessor; 
 
-import cpen221.mp1.datawrapper.DataWrapper;
-import cpen221.mp1.ngrams.NGrams;
+import cpen221.mp1.datawrapper.DataWrapper; 
+import cpen221.mp1.ngrams.NGrams; 
 
-import java.io.FileNotFoundException;
-import java.util.Map;
-import java.util.*;
+import java.io.FileNotFoundException; 
+import java.util.Map; 
+import java.util.*; 
 
 public class DataAnalyzer {
 
-    private DataWrapper dw;
-    public List<String> stringList = new ArrayList<>();
+    private DataWrapper dw; 
+    public List<String> stringList = new ArrayList<>(); 
 
     /**
      * Create an object to analyze a RateMyProfessor dataset
@@ -18,16 +18,16 @@ public class DataAnalyzer {
      * @throws FileNotFoundException if the file does not exist or is not found
      */
     public DataAnalyzer(String dataSourceFileName) throws FileNotFoundException {
-        dw = new DataWrapper(dataSourceFileName);
+        dw = new DataWrapper(dataSourceFileName); 
 
         //Skip the first line of the file
-        String nextLine = dw.nextLine();
-        nextLine = dw.nextLine();
+        String nextLine = dw.nextLine(); 
+        nextLine = dw.nextLine(); 
 
         //Add each line to the List of Strings
         while (nextLine != null) {
-            stringList.add(nextLine);
-            nextLine = dw.nextLine();
+            stringList.add(nextLine); 
+            nextLine = dw.nextLine(); 
         }
     }
 
@@ -44,48 +44,48 @@ public class DataAnalyzer {
      */
     public Map<String, Long> getHistogram(String query) throws Exception {
 
-        String gender;
-        double rating;
-        String highMediumLow = "";
+        String gender; 
+        double rating; 
+        String highMediumLow = ""; 
 
-        Map<String, Long> histogram = new HashMap<>();
+        Map<String, Long> histogram = new HashMap<>(); 
 
         //Initialize the histogram with keys and values
-        histogram.put("ML", 0L);
-        histogram.put("WL", 0L);
-        histogram.put("MM", 0L);
-        histogram.put("WM", 0L);
-        histogram.put("MH", 0L);
-        histogram.put("WH", 0L);
+        histogram.put("ML", 0L); 
+        histogram.put("WL", 0L); 
+        histogram.put("MM", 0L); 
+        histogram.put("WM", 0L); 
+        histogram.put("MH", 0L); 
+        histogram.put("WH", 0L); 
 
         //Iterate through each line, checking whether it contains the search query
         for (int i = 0; i < this.stringList.size(); i++) {
-            String currentLine = this.stringList.get(i);
+            String currentLine = this.stringList.get(i); 
 
             if (NGrams.numOccurences(currentLine, query) > 0) {
 
-                gender = getGender(currentLine);
-                rating = getRating(currentLine);
+                gender = getGender(currentLine); 
+                rating = getRating(currentLine); 
 
                 if (Double.compare(rating, 0.0) >= 0 && Double.compare(rating, 2.0) <= 0) {
-                    highMediumLow = "L";
+                    highMediumLow = "L"; 
                 } else if (Double.compare(rating, 2.0) > 0 && Double.compare(rating, 3.5) <= 0) {
-                    highMediumLow = "M";
+                    highMediumLow = "M"; 
                 } else if (Double.compare(rating, 3.5) > 0 && Double.compare(rating, 5.0) <= 0) {
-                    highMediumLow = "H";
+                    highMediumLow = "H"; 
                 }
 
                 //If the histogram has a category for the gender and rating, add one to its count
                 if (histogram.containsKey(gender + highMediumLow)) {
-                    long count = histogram.get(gender + highMediumLow);
+                    long count = histogram.get(gender + highMediumLow); 
 
-                    histogram.put(gender + highMediumLow, count += NGrams.numOccurences(currentLine, query));
+                    histogram.put(gender + highMediumLow, count += NGrams.numOccurences(currentLine, query)); 
 
                 }
             }
         }
 
-        return histogram;
+        return histogram; 
     }
 
     /**
@@ -94,8 +94,8 @@ public class DataAnalyzer {
      * @return the gender of the professor as a String
      */
     public String getGender(String line) {
-        String[] lineArray = NGrams.getWords(line);
-        return lineArray[1].toUpperCase();
+        String[] lineArray = NGrams.getWords(line); 
+        return lineArray[1].toUpperCase(); 
     }
 
     /**
@@ -104,9 +104,9 @@ public class DataAnalyzer {
      * @return the rating of the professor as an integer
      */
     public double getRating(String line) {
-        String[] lineArray = NGrams.getWords(line);
-        double rating = Double.parseDouble(lineArray[0]);
-        return rating;
+        String[] lineArray = NGrams.getWords(line); 
+        double rating = Double.parseDouble(lineArray[0]); 
+        return rating; 
     }
 
 }

@@ -1,9 +1,9 @@
-package cpen221.mp1.autocompletion;
+package cpen221.mp1.autocompletion; 
 
-import cpen221.mp1.searchterm.SearchTerm;
-import java.util.*;
-import static cpen221.mp1.searchterm.SearchTerm.byPrefixOrder;
-import static cpen221.mp1.searchterm.SearchTerm.byReverseWeightOrder;
+import cpen221.mp1.searchterm.SearchTerm; 
+import java.util.*; 
+import static cpen221.mp1.searchterm.SearchTerm.byPrefixOrder; 
+import static cpen221.mp1.searchterm.SearchTerm.byReverseWeightOrder; 
 
 /**
  * @author Anu Ponnusamy
@@ -28,7 +28,7 @@ public class AutoCompletor {
      */
     public AutoCompletor(SearchTerm[] searchTerms) {
 
-        this.searchText = searchTerms;
+        this.searchText = searchTerms; 
     }
 
     /**
@@ -37,38 +37,38 @@ public class AutoCompletor {
      * @return all search terms that match the given prefix.
      */
     public SearchTerm[] allMatches(String prefix) {
-        List<SearchTerm> matches = new ArrayList<>();
+        List<SearchTerm> matches = new ArrayList<>(); 
         for (int i = 0; i < searchText.length; i++) {
             if (searchText[i].getQuery().startsWith(prefix)) {
-                matches.add(searchText[i]);
+                matches.add(searchText[i]); 
             }
         }
 
-        SearchTerm[] matchesArray = new SearchTerm[matches.size()];
-        matchesArray = matches.toArray(matchesArray);
+        SearchTerm[] matchesArray = new SearchTerm[matches.size()]; 
+        matchesArray = matches.toArray(matchesArray); 
 
         for (int j = 0; j < matchesArray.length - 1; j++) {
-            int comparisonWeight = byReverseWeightOrder().compare(matchesArray[j], matchesArray[j + 1]);
+            int comparisonWeight = byReverseWeightOrder().compare(matchesArray[j], matchesArray[j + 1]); 
             if (comparisonWeight == -1) {
-                SearchTerm temp = matchesArray[j];
-                matchesArray[j] = matchesArray[j + 1];
-                matchesArray[j + 1] = temp;
-                j = -1;
+                SearchTerm temp = matchesArray[j]; 
+                matchesArray[j] = matchesArray[j + 1]; 
+                matchesArray[j + 1] = temp; 
+                j = -1; 
             }
         }
 
         for (int k = 0; k < matchesArray.length - 1; k++) {
-            int comparisonLexicographic = byPrefixOrder().compare(matchesArray[k], matchesArray[k + 1]);
+            int comparisonLexicographic = byPrefixOrder().compare(matchesArray[k], matchesArray[k + 1]); 
             if (matchesArray[k].getWeight() == matchesArray[k + 1].getWeight()) {
                 if (comparisonLexicographic < 0) {
-                    SearchTerm temp = matchesArray[k];
-                    matchesArray[k] = matchesArray[k + 1];
-                    matchesArray[k + 1] = temp;
-                    k = -1;
+                    SearchTerm temp = matchesArray[k]; 
+                    matchesArray[k] = matchesArray[k + 1]; 
+                    matchesArray[k + 1] = temp; 
+                    k = -1; 
                 }
             }
         }
-        return matchesArray;
+        return matchesArray; 
     }
 
     /**
@@ -79,15 +79,15 @@ public class AutoCompletor {
      * k is indicated by the parameter 'limit'.
      */
     public SearchTerm[] topKMatches(String prefix, int limit) {
-        SearchTerm[] allMatches = allMatches(prefix);
+        SearchTerm[] allMatches = allMatches(prefix); 
         if (allMatches.length < limit) {
-            return allMatches;
+            return allMatches; 
         } else {
-            SearchTerm[] topKMatches = new SearchTerm[limit];
+            SearchTerm[] topKMatches = new SearchTerm[limit]; 
             for (int i = 0; i < limit; i++) {
-                topKMatches[i] = allMatches[i];
+                topKMatches[i] = allMatches[i]; 
             }
-            return topKMatches;
+            return topKMatches; 
         }
     }
 
@@ -98,7 +98,7 @@ public class AutoCompletor {
      * k is indicated by the constant DEFAULT_SEARCH_LIMIT.
      */
     public SearchTerm[] topKMatches(String prefix) {
-        return topKMatches(prefix, DEFAULT_SEARCH_LIMIT);
+        return topKMatches(prefix, DEFAULT_SEARCH_LIMIT); 
     }
 
     /**
@@ -107,7 +107,7 @@ public class AutoCompletor {
      * @return the number of search terms that match the given prefix.
      */
     public int numberOfMatches(String prefix) {
-        return allMatches(prefix).length;
+        return allMatches(prefix).length; 
     }
 }
 

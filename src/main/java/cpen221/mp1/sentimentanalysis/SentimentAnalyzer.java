@@ -8,8 +8,6 @@ import java.util.*;
 
 public class SentimentAnalyzer {
 
-
-
         List<Map<String, Float>> bagOfWords = new ArrayList<>();
         public DataWrapper dw;
         public List<String> stringList = new ArrayList<String>();
@@ -24,12 +22,12 @@ public class SentimentAnalyzer {
         HashMap<String, Float> rating4 = new HashMap<>();
         HashMap<String, Float> rating4_5 = new HashMap<>();
         HashMap<String, Float> rating5 = new HashMap<>();
+
+
         /**
          *
          * @param filename
          */
-
-
         //THIS IS THE TRAINING DATA
         // TODO: Implement this constructor and write the spec
         // You may assume that the file is in the format
@@ -47,8 +45,6 @@ public class SentimentAnalyzer {
         //for example the index i = 3 in the List would correspond to a (3/2) + 1 = 2.5 rating.
         public SentimentAnalyzer(String filename) throws FileNotFoundException {
                 DataWrapper dw = new DataWrapper(filename);
-
-                //Skip the first line of the file
                 String nextLine = dw.nextLine();
                 nextLine = dw.nextLine();
 
@@ -62,12 +58,9 @@ public class SentimentAnalyzer {
                 bagOfWords.add(rating4_5);
                 bagOfWords.add(rating5);
 
-                //Add each line to the List of Strings
                 while(nextLine != null) {
                         stringList.add(nextLine);
-                        //Obtains review text and rating of each line
                         String[] review = getReview(nextLine);
-
                         totalWords += review.length;
                         float rating = getRating(nextLine);
                         ratingList.add(rating);
@@ -105,8 +98,6 @@ public class SentimentAnalyzer {
                 System.out.println("sadasd");
         }
 
-
-
         /**
          *
          * @param reviewText
@@ -120,17 +111,10 @@ public class SentimentAnalyzer {
                 float maxVal = -1;
                 float predictedRating = -1;
 
-
                 for(float i = 1; i < 5.5; i += 0.5) {
                         wordR = PWordRating(reviewTextArray, i);
                         wordP = PBagOfWords(reviewTextArray);
                         ratingP = PRating(i);
-
-                        System.out.println(i);
-                        System.out.println(wordR);
-                        System.out.println(wordP);
-                        System.out.println(ratingP);
-                        System.out.println("---------");
 
                         float totalVal = (wordR * ratingP)/wordP;
                         if (i == 1 || totalVal > maxVal) {
@@ -203,19 +187,10 @@ public class SentimentAnalyzer {
                } else {
                        count = 1;
                        totalCount += 1;
-
-
-                       //POSSIBLE SOURCE OF ERROR
                }
-
-
 
                return count/totalCount;
        }
-
-
-       //The following are helper methods for the constructor
-
 
         private void addToHashMap(String[] inputArray, Map<String, Float> inputMap) {
                 for(int i = 0; i < inputArray.length; i++) {
@@ -239,22 +214,6 @@ public class SentimentAnalyzer {
         private String[] getReview(String line) {
                 String[] reviewArray = getWords(line.substring(6));
                 return reviewArray;
-        }
-
-        private Map<String, Float> get1Grams (String[] line) {
-                Map<String, Float> oneGrams = new HashMap<>();
-
-                for (int i = 0; i < line.length; i++) {
-                        String word = line[i];
-                        if(oneGrams.containsKey(word)) {
-                                Float value = oneGrams.get(word);
-                                oneGrams.put(word, value + 1);
-                        } else {
-                                oneGrams.put(word, 1F);
-                        }
-                }
-
-                return oneGrams;
         }
 
         private String[] getWords(String text) {

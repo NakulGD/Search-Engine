@@ -262,9 +262,3 @@ public class SentimentAnalyzer {
         return reviewArray;  
     }
 }
-
-
-
-
-
-

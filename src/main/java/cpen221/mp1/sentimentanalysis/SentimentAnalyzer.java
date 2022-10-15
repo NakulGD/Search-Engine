@@ -101,7 +101,7 @@ public class SentimentAnalyzer {
             } else if (rating == 4.5F) {
                 addToHashMap(review, rating4_5);  
 
-            } else if (rating == 5.0F) {
+            } else {
                 addToHashMap(review, rating5);  
             }
 

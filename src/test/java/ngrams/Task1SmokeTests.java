@@ -8,17 +8,6 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import cpen221.mp1.ngrams.NGrams;
-import cpen221.mp1.ratemyprofessor.DataAnalyzer;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
-import java.io.FileNotFoundException;
-import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 public class Task1SmokeTests {
 
     @Test

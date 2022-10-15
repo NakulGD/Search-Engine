@@ -5,6 +5,7 @@ import cpen221.mp1.datawrapper.DataWrapper;
 import java.io.FileNotFoundException;
 import java.text.BreakIterator;
 import java.util.*;
+import cpen221.mp1.ngrams.NGrams;
 
 public class SentimentAnalyzer {
 
@@ -113,7 +114,7 @@ public class SentimentAnalyzer {
          * @return
          */
         public float getPredictedRating(String reviewText) {
-                String[] reviewTextArray = getWords(reviewText);
+                String[] reviewTextArray = NGrams.getWords(reviewText);
                 float wordP;
                 float ratingP;
                 float wordR;
@@ -231,13 +232,13 @@ public class SentimentAnalyzer {
         }
 
         private float getRating(String line) {
-                String[] lineArray = getWords(line);
+                String[] lineArray = NGrams.getWords(line);
                 float rating = Float.parseFloat(lineArray[0]);
                 return rating;
         }
 
         private String[] getReview(String line) {
-                String[] reviewArray = getWords(line.substring(6));
+                String[] reviewArray = NGrams.getWords(line.substring(6));
                 return reviewArray;
         }
 
@@ -255,33 +256,6 @@ public class SentimentAnalyzer {
                 }
 
                 return oneGrams;
-        }
-
-        private String[] getWords(String text) {
-                ArrayList<String> words = new ArrayList<>();
-                BreakIterator wb = BreakIterator.getWordInstance();
-                wb.setText(text);
-                int start = wb.first();
-                for (int end = wb.next();
-                     end != BreakIterator.DONE;
-                     start = end, end = wb.next()) {
-                        String word = text.substring(start, end).toLowerCase();
-                        word = word.replaceAll("^\\s*\\p{Punct}+\\s*", "").replaceAll("\\s*\\p{Punct}+\\s*$", "");
-                        if (!word.equals(" ")) {
-                                words.add(word);
-                        }
-                }
-                
-                for (int i = 0; i < words.size(); i++) {
-                        if(words.get(i).equals("")) {
-                                words.remove(i);
-                                i--;
-                        }
-                }
-
-                String[] wordsArray = new String[words.size()];
-                words.toArray(wordsArray);
-                return wordsArray;
         }
     }
 

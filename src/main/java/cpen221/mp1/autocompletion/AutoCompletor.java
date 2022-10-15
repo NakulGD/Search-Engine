@@ -107,9 +107,5 @@ public class AutoCompletor {
     public int numberOfMatches(String prefix) {
         return allMatches(prefix).length;
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> Felix
 }
 

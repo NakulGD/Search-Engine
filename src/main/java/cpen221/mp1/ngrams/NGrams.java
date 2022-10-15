@@ -7,8 +7,7 @@ import java.util.Map;
 
 public class NGrams {
 
-    String[] line;
-    String[] currentLine;
+    String[] lines;
 
     /**
      * Create an NGrams object
@@ -17,9 +16,7 @@ public class NGrams {
      *             is not null and is not empty.
      */
     public NGrams(String[] text) {
-
-        this.line = text;
-        currentLine = null;
+        this.lines = text;
     }
 
     /**
@@ -34,23 +31,19 @@ public class NGrams {
      */
     public long getTotalNGramCount(int n) throws IllegalArgumentException {
 
-        int count = 0;
+        int totalCount = 0;
 
-        // First get list of possible grams
         List<Map<String, Long>> listOfGrams = this.getAllNGrams();
 
-
-        //Check whether inputted n is valid
         if(n < 1 || n > listOfGrams.size()) {
             throw new IllegalArgumentException();
         }
 
-        //Iterate through each entry in the list up to n
         for(int i = 0; i < n; i++) {
-            count += listOfGrams.get(i).size();
+            totalCount += listOfGrams.get(i).size();
         }
 
-        return count;
+        return totalCount;
     }
 
     /**
@@ -61,49 +54,37 @@ public class NGrams {
      */
     public List<Map<String, Long>> getAllNGrams() throws IllegalArgumentException {
 
-        //Initialize List of Maps
         List<Map<String, Long>> listOfGrams = new ArrayList<Map<String, Long>>();
 
-        //Iterate through array and turn sentences into a separate string array
+        for(int i = 0; i < lines.length; i++){
+            String[] currentLine = getWords(this.lines[i]);
 
-        for(int i = 0; i < line.length; i++){
-            currentLine = getWords(this.line[i]);
-
-            //Throw exception in the case of empty array
-            if(this.currentLine.length == 0) {
+            if(currentLine.length == 0) {
                 throw new IllegalArgumentException();
             }
 
-            //Iterate 1 through to longest possible gram, add map to list
-
-            for(int glength = 1; glength <= this.currentLine.length; glength++) {
+            for(int gramLength = 1; gramLength <= currentLine.length; gramLength++) {
 
                 listOfGrams.add(new HashMap<String, Long>());
 
-                //Iterate through line with each word as starting word in gram
+                for(int j = 0; j <= currentLine.length - gramLength; j++) {
 
-                for(int j = 0; j <= this.currentLine.length - glength; j++) {
-
-                    //Using StringBuilder, construct current String of glength words
                     StringBuilder current = new StringBuilder();
 
-                    for (int k = j; k < j + glength; k++) {
+                    for (int k = j; k < j + gramLength; k++) {
+                        current.append(currentLine[k]);
 
-                        current.append(this.currentLine[k]);
-
-                        //Insert space unless last word
-                        if (k != j + glength - 1) {
+                        if (k != j + gramLength - 1) {
                             current.append(" ");
                         }
                     }
                     String currentStr = current.toString();
 
-                    //Check whether the current String is in the current map
-                    if (listOfGrams.get(glength - 1).containsKey(currentStr)) {
-                        Long count = listOfGrams.get(glength - 1).get(currentStr);
-                        listOfGrams.get(glength - 1).put(currentStr, ++count);
+                    if (listOfGrams.get(gramLength - 1).containsKey(currentStr)) {
+                        Long count = listOfGrams.get(gramLength - 1).get(currentStr);
+                        listOfGrams.get(gramLength - 1).put(currentStr, ++count);
                     } else {
-                        listOfGrams.get(glength - 1).put(currentStr, 1L);
+                        listOfGrams.get(gramLength - 1).put(currentStr, 1L);
                     }
                 }
             }

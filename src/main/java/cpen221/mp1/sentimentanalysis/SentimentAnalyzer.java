@@ -199,13 +199,16 @@ public class SentimentAnalyzer {
                }
 
                if (currentRatingMap.containsKey(word)) {
-                       count = currentRatingMap.get(word);
+                       count = currentRatingMap.get(word) + 1;
                } else {
                        count = 1;
                        totalCount += 1;
 
+
                        //POSSIBLE SOURCE OF ERROR
                }
+
+
 
                return count/totalCount;
        }

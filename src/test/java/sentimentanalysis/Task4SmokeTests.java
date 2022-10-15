@@ -9,7 +9,7 @@ public class Task4SmokeTests {
     @Test
     public void testRating1() {
         try {
-            SentimentAnalyzer rmp_sa = new SentimentAnalyzer("data/task4testfile.txt");
+            SentimentAnalyzer rmp_sa = new SentimentAnalyzer("data/ratemyprofessor_data.txt");
             assertEquals(1f, rmp_sa.getPredictedRating("oh no it was so difficult"));
         }
         catch (FileNotFoundException fnf) {

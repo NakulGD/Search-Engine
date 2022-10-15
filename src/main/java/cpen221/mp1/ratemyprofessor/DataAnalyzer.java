@@ -75,20 +75,17 @@ public class DataAnalyzer {
                 gender = getGender(currentLine); 
                 rating = getRating(currentLine); 
 
-                if (Double.compare(rating, 0.0) >= 0 && Double.compare(rating, 2.0) <= 0) {
+                if (Double.compare(rating, 2.0) <= 0) {
                     highMediumLow = "L"; 
-                } else if (Double.compare(rating, 2.0) > 0 && Double.compare(rating, 3.5) <= 0) {
+                } else if (Double.compare(rating, 3.5) <= 0) {
                     highMediumLow = "M"; 
-                } else if (Double.compare(rating, 3.5) > 0 && Double.compare(rating, 5.0) <= 0) {
+                } else {
                     highMediumLow = "H"; 
                 }
 
-                if (histogram.containsKey(gender + highMediumLow)) {
-                    long count = histogram.get(gender + highMediumLow); 
+                long count = histogram.get(gender + highMediumLow);
+                histogram.put(gender + highMediumLow, count += NGrams.numOccurences(currentLine, query));
 
-                    histogram.put(gender + highMediumLow, count += NGrams.numOccurences(currentLine, query)); 
-
-                }
             }
         }
 

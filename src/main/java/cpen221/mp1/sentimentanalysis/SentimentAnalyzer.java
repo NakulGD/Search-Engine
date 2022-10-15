@@ -10,7 +10,6 @@ import cpen221.mp1.ngrams.NGrams;
 public class SentimentAnalyzer {
 
         List<Map<String, Float>> bagOfWords = new ArrayList<>();
-        public DataWrapper dw;
         public List<String> stringList = new ArrayList<String>();
         public List<Float> ratingList = new ArrayList<>();
         int totalWords;
@@ -26,24 +25,13 @@ public class SentimentAnalyzer {
 
 
         /**
+         * Creates a List object with Map elements that contain all 1-gram's for each rating value. Index, i, in List
+         * corresponds to the rating = (i/2) + 1
          *
          * @param filename
+         * @return a List object with Map elements that contain all 1-gram's
+         * for each rating value. Index, i, in List corresponds to the rating = (i/2) + 1
          */
-        //THIS IS THE TRAINING DATA
-        // TODO: Implement this constructor and write the spec
-        // You may assume that the file is in the format
-        // of the RateMyProfessor data with each line containing
-        // a rating, a second column (gender or similar) that you
-        // can ignore for this task, and the text of the review.
-        // The file whose name is provided here is expected to
-        // contain the **training data** with which you build
-        // your prediction model.
-
-
-
-        //Constructor creates a list of hashmaps that contain the 1-grams and their respective counts
-        //the index i of List contains the map corresponding to (i/2) + 1 rating
-        //for example the index i = 3 in the List would correspond to a (3/2) + 1 = 2.5 rating.
         public SentimentAnalyzer(String filename) throws FileNotFoundException {
                 DataWrapper dw = new DataWrapper(filename);
                 String nextLine = dw.nextLine();
@@ -95,14 +83,12 @@ public class SentimentAnalyzer {
 
                         nextLine = dw.nextLine();
                 }
-
-                System.out.println("sadasd");
         }
 
         /**
-         *
+         * Obtain a float value representing the predicted rating
          * @param reviewText
-         * @return
+         * @return a float value representing the predicted rating
          */
         public float getPredictedRating(String reviewText) {
                 String[] reviewTextArray = NGrams.getWords(reviewText);
@@ -128,13 +114,23 @@ public class SentimentAnalyzer {
         }
 
 
-        //returns the total number of occurrences of given rating relative to the total number of reviews (prior probability of said rating)
+        /**
+         *
+         * @param inputRating which is a value in the set {1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0}
+         * @return float value representing the number of occurrences of a given rating in a file
+         * relative to the total number of reviews
+         */
         public float PRating (float inputRating) {
                 float totalReviews = ratingList.size();
                 float count = Collections.frequency(ratingList, inputRating);
                 return count/totalReviews;
         }
 
+        /**
+         * Obtain a float
+         * @param
+         * @return float value representing P(bag-of-words) for all words in String[] array
+         */
         //returns the product of all 1-gram words possibilities
         public float PBagOfWords (String[] inputTextArray) {
                 float totalVal = 1;

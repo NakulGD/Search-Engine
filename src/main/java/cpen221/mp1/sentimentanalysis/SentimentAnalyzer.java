@@ -7,7 +7,7 @@ import cpen221.mp1.ngrams.NGrams;
 
 public class SentimentAnalyzer {
     List<Map<String, Float>> bagOfWords = new ArrayList<>();
-    public List<String> stringList = new ArrayList<String>();
+    public List<String> stringList = new ArrayList<>();
     public List<Float> ratingList = new ArrayList<>();
     int totalWords;
     HashMap<String, Float> rating1 = new HashMap<>();
@@ -24,7 +24,7 @@ public class SentimentAnalyzer {
     * Creates a List object with Map elements that contain all 1-gram's for each rating value. Index, i, in List
     * corresponds to the rating = (i/2) + 1
     *
-    * @param filename
+    * @param filename File that contains reviews
     * @return a List object with Map elements that contain all 1-gram's
     * for each rating value. Index, i, in List corresponds to the rating = (i/2) + 1
     */
@@ -83,7 +83,7 @@ public class SentimentAnalyzer {
 
     /**
     * Obtain a float value representing the predicted rating
-    * @param reviewText
+    * @param reviewText Text that contains reviews
     * @return a float value representing the predicted rating
     */
     public float getPredictedRating(String reviewText) {
@@ -124,7 +124,7 @@ public class SentimentAnalyzer {
 
     /**
      * Obtain a float
-     * @param
+     * @param inputTextArray array of Strings
      * @return float value representing P(bag-of-words) for all words in String[] array
      */
     public float pBagOfWords(String[] inputTextArray) {
@@ -143,7 +143,7 @@ public class SentimentAnalyzer {
         return totalVal;
     }
 
-    public float wordProb (String word) {
+    public float wordProb(String word) {
         float count = 0;
 
         for (int i = 0; i < bagOfWords.size(); i++) {
@@ -159,50 +159,48 @@ public class SentimentAnalyzer {
             count = 1;
         }
         return count / totalWords;
+    }
+
+    public float wordRating(float rating, String word) {
+        int index = (int) (2 * (rating - 1));
+        Map<String, Float> currentRatingMap = bagOfWords.get(index);
+        float count;
+        float totalCount = 0F;
+        for (float vals : currentRatingMap.values()) {
+            totalCount += vals;
         }
 
-        public float wordRating (float rating, String word) {
-                int index = (int) (2*(rating - 1));
-                Map<String, Float> currentRatingMap = bagOfWords.get(index);
-                float count;
-                float totalCount = 0F;
-                for (float vals : currentRatingMap.values()) {
-                        totalCount += vals;
-                }
+        if (currentRatingMap.containsKey(word)) {
+            count = currentRatingMap.get(word) + 1;
+        } else {
+            count = 1;
+            totalCount += 1;
+        }
+        return count / totalCount;
+    }
 
-                if (currentRatingMap.containsKey(word)) {
-                        count = currentRatingMap.get(word) + 1;
-                } else {
-                        count = 1;
-                        totalCount += 1;
-                }
-
-                return count/totalCount;
+    private void addToHashMap(String[] inputArray, Map<String, Float> inputMap) {
+        for (int i = 0; i < inputArray.length; i++) {
+            String currentWord = inputArray[i];
+            if (inputMap.containsKey(currentWord)) {
+                inputMap.put(currentWord, inputMap.get(currentWord) + 1);
+            } else {
+                inputMap.put(currentWord, 1F);
+            }
         }
 
-        private void addToHashMap(String[] inputArray, Map<String, Float> inputMap) {
-                for(int i = 0; i < inputArray.length; i++) {
-                        String currentWord = inputArray[i];
-                        if(inputMap.containsKey(currentWord)) {
-                                inputMap.put(currentWord, inputMap.get(currentWord) + 1);
-                        }
-                        else {
-                                inputMap.put(currentWord, 1F);
-                        }
-                }
+    }
 
-        }
+    private float getRating(String line) {
+        String[] lineArray = NGrams.getWords(line);
+        float rating = Float.parseFloat(lineArray[0]);
+        return rating;
+    }
 
-        private float getRating(String line) {
-                String[] lineArray = NGrams.getWords(line);
-                float rating = Float.parseFloat(lineArray[0]);
-                return rating;
-        }
-
-        private String[] getReview(String line) {
-                String[] reviewArray = NGrams.getWords(line.substring(6));
-                return reviewArray;
-        }
+    private String[] getReview(String line) {
+        String[] reviewArray = NGrams.getWords(line.substring(6));
+        return reviewArray;
+    }
 }
 
 

@@ -68,10 +68,6 @@ public class Task4SmokeTests {
             SentimentAnalyzer rmp_sa = new SentimentAnalyzer("data/ratmyprofessor_data.txt");
         }
         catch (Exception fnf) {
-            // no file should exist so ...
-            // this is an alternative approach to test
-            // for exceptions, although assertThrows is
-            // better
             assertTrue(true);
         }
     }

@@ -40,7 +40,6 @@ package cpen221.mp1.autocompletion.gui;
 import cpen221.mp1.autocompletion.AutoCompletor;
 import cpen221.mp1.searchterm.SearchTerm;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
@@ -102,6 +101,7 @@ public class AutoCompletorGUI extends JFrame {
      * @param searchTerms the terms that will be used to autocomplete a query
      * @param k the maximum number of suggestions to return
      */
+    @SuppressWarnings("checkstyle:SeparatorWrap")
     public AutoCompletorGUI(SearchTerm[] searchTerms, int k) {
         this.k = k;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

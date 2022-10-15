@@ -9,8 +9,8 @@ import java.util.*;
 
 public class DataAnalyzer {
 
-    public DataWrapper dw;
-    public List<String> stringList = new ArrayList<String>();
+    private DataWrapper dw;
+    public List<String> stringList = new ArrayList<>();
 
     /**
      * Create an object to analyze a RateMyProfessor dataset
@@ -18,14 +18,14 @@ public class DataAnalyzer {
      * @throws FileNotFoundException if the file does not exist or is not found
      */
     public DataAnalyzer(String dataSourceFileName) throws FileNotFoundException {
-        DataWrapper dw = new DataWrapper(dataSourceFileName);
+        dw = new DataWrapper(dataSourceFileName);
 
         //Skip the first line of the file
         String nextLine = dw.nextLine();
         nextLine = dw.nextLine();
 
         //Add each line to the List of Strings
-        while(nextLine != null) {
+        while (nextLine != null) {
             stringList.add(nextLine);
             nextLine = dw.nextLine();
         }
@@ -48,7 +48,7 @@ public class DataAnalyzer {
         double rating;
         String highMediumLow = "";
 
-        Map<String, Long> histogram = new HashMap<String, Long>();
+        Map<String, Long> histogram = new HashMap<>();
 
         //Initialize the histogram with keys and values
         histogram.put("ML", 0L);
@@ -59,26 +59,24 @@ public class DataAnalyzer {
         histogram.put("WH", 0L);
 
         //Iterate through each line, checking whether it contains the search query
-        for(int i = 0; i < this.stringList.size(); i++) {
+        for (int i = 0; i < this.stringList.size(); i++) {
             String currentLine = this.stringList.get(i);
 
-            if(NGrams.numOccurences(currentLine, query) > 0) {
+            if (NGrams.numOccurences(currentLine, query) > 0) {
 
                 gender = getGender(currentLine);
                 rating = getRating(currentLine);
 
-                if(Double.compare(rating, 0.0) >= 0 && Double.compare(rating, 2.0) <= 0) {
+                if (Double.compare(rating, 0.0) >= 0 && Double.compare(rating, 2.0) <= 0) {
                     highMediumLow = "L";
-                }
-                else if(Double.compare(rating, 2.0) > 0 && Double.compare(rating, 3.5) <= 0) {
+                } else if (Double.compare(rating, 2.0) > 0 && Double.compare(rating, 3.5) <= 0) {
                     highMediumLow = "M";
-                }
-                else if(Double.compare(rating, 3.5) > 0 && Double.compare(rating, 5.0) <= 0) {
+                } else if (Double.compare(rating, 3.5) > 0 && Double.compare(rating, 5.0) <= 0) {
                     highMediumLow = "H";
                 }
 
                 //If the histogram has a category for the gender and rating, add one to its count
-                if(histogram.containsKey(gender + highMediumLow)) {
+                if (histogram.containsKey(gender + highMediumLow)) {
                     long count = histogram.get(gender + highMediumLow);
 
                     histogram.put(gender + highMediumLow, count += NGrams.numOccurences(currentLine, query));
@@ -92,7 +90,7 @@ public class DataAnalyzer {
 
     /**
      * Searches current line for gender of professor
-     * @param line
+     * @param line current line
      * @return the gender of the professor as a String
      */
     public String getGender(String line) {
@@ -102,8 +100,8 @@ public class DataAnalyzer {
 
     /**
      * Searches current line for rating of professor
-     * @param line
-     * @return the rating of the progessor as an integer
+     * @param line current line
+     * @return the rating of the professor as an integer
      */
     public double getRating(String line) {
         String[] lineArray = NGrams.getWords(line);

@@ -19,7 +19,6 @@ public class SearchTerm implements Comparable<SearchTerm> {
         this.weight = weight;
     }
 
-
     public String getQuery() {
         return query;
     }
@@ -82,8 +81,7 @@ public class SearchTerm implements Comparable<SearchTerm> {
         if (other instanceof SearchTerm) {
             SearchTerm otherST = (SearchTerm) other;
             return (this.query.equals(otherST.query) && this.weight == otherST.weight);
-        }
-        else {
+        } else {
             return false;
         }
     }

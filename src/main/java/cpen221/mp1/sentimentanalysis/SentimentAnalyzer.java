@@ -1,11 +1,10 @@
-package cpen221.mp1.sentimentanalysis;
+package cpen221.mp1.sentimentanalysis;  
 
 import cpen221.mp1.datawrapper.DataWrapper;
 import java.io.FileNotFoundException;
 import java.util.*;
 import cpen221.mp1.ngrams.NGrams;
 import cpen221.mp1.ratemyprofessor.DataAnalyzer;
-
 
 /**
  * @author Nakul Dharan
@@ -57,19 +56,19 @@ public class SentimentAnalyzer {
     * for each rating value. Index, i, in List corresponds to the rating = (i/2) + 1
     */
     public SentimentAnalyzer(String filename) throws FileNotFoundException {
-        DataWrapper dw = new DataWrapper(filename);
-        String nextLine = dw.nextLine();
-        nextLine = dw.nextLine();
+        DataWrapper dw = new DataWrapper(filename);  
+        String nextLine = dw.nextLine();  
+        nextLine = dw.nextLine();  
 
-        bagOfWords.add(rating1);
-        bagOfWords.add(rating1_5);
-        bagOfWords.add(rating2);
-        bagOfWords.add(rating2_5);
-        bagOfWords.add(rating3);
-        bagOfWords.add(rating3_5);
-        bagOfWords.add(rating4);
-        bagOfWords.add(rating4_5);
-        bagOfWords.add(rating5);
+        bagOfWords.add(rating1);  
+        bagOfWords.add(rating1_5);  
+        bagOfWords.add(rating2);  
+        bagOfWords.add(rating2_5);  
+        bagOfWords.add(rating3);  
+        bagOfWords.add(rating3_5);  
+        bagOfWords.add(rating4);  
+        bagOfWords.add(rating4_5);  
+        bagOfWords.add(rating5);  
 
         while (nextLine != null) {
             stringList.add(nextLine);
@@ -77,35 +76,36 @@ public class SentimentAnalyzer {
             totalWords += review.length;
             float rating = (float) DataAnalyzer.getRating(nextLine);
             ratingList.add(rating);
+
             if (rating == 1F) {
-                addToHashMap(review, rating1);
+                addToHashMap(review, rating1);  
 
             } else if (rating == 1.5F) {
-                addToHashMap(review, rating1_5);
+                addToHashMap(review, rating1_5);  
 
             } else if (rating == 2.0F) {
-                addToHashMap(review, rating2);
+                addToHashMap(review, rating2);  
 
             } else if (rating == 2.5F) {
-                addToHashMap(review, rating2_5);
+                addToHashMap(review, rating2_5);  
 
             } else if (rating == 3.0F) {
-                addToHashMap(review, rating3);
+                addToHashMap(review, rating3);  
 
             } else if (rating == 3.5F) {
-                addToHashMap(review, rating3_5);
+                addToHashMap(review, rating3_5);  
 
             } else if (rating == 4.0F) {
-                addToHashMap(review, rating4);
+                addToHashMap(review, rating4);  
 
             } else if (rating == 4.5F) {
-                addToHashMap(review, rating4_5);
+                addToHashMap(review, rating4_5);  
 
             } else if (rating == 5.0F) {
-                addToHashMap(review, rating5);
+                addToHashMap(review, rating5);  
             }
 
-            nextLine = dw.nextLine();
+            nextLine = dw.nextLine();  
         }
     }
 
@@ -116,26 +116,26 @@ public class SentimentAnalyzer {
      * @return The predicted rating.
      */
     public float getPredictedRating(String reviewText) {
-        String[] reviewTextArray = NGrams.getWords(reviewText);
-        float wordP;
-        float ratingP;
-        float wordR;
-        float maxVal = -1;
-        float predictedRating = -1;
+        String[] reviewTextArray = NGrams.getWords(reviewText);  
+        float wordP;  
+        float ratingP;  
+        float wordR;  
+        float maxVal = -1;  
+        float predictedRating = -1;  
 
         for (float i = 1; i < 5.5; i += 0.5) {
-            wordR = pWordRating(reviewTextArray, i);
-            wordP = pBagOfWords(reviewTextArray);
-            ratingP = pRating(i);
+            wordR = pWordRating(reviewTextArray, i);  
+            wordP = pBagOfWords(reviewTextArray);  
+            ratingP = pRating(i);  
 
-            float totalVal = (wordR * ratingP) / wordP;
+            float totalVal = (wordR * ratingP) / wordP;  
             if (i == 1 || totalVal > maxVal) {
-                maxVal = totalVal;
-                predictedRating = i;
+                maxVal = totalVal;  
+                predictedRating = i;  
             }
         }
 
-        return predictedRating;
+        return predictedRating;  
     }
 
     /**
@@ -147,9 +147,9 @@ public class SentimentAnalyzer {
      * relative to the total number of reviews.
      */
     public float pRating(float inputRating) {
-        float totalReviews = ratingList.size();
-        float count = Collections.frequency(ratingList, inputRating);
-        return count / totalReviews;
+        float totalReviews = ratingList.size();  
+        float count = Collections.frequency(ratingList, inputRating);  
+        return count / totalReviews;  
     }
 
     /**
@@ -160,11 +160,11 @@ public class SentimentAnalyzer {
      * to the number of words in file.
      */
     public float pBagOfWords(String[] inputTextArray) {
-        float totalVal = 1;
+        float totalVal = 1;  
         for (int i = 0; i < inputTextArray.length; i++) {
-            totalVal *= wordProb(inputTextArray[i]);
+            totalVal *= wordProb(inputTextArray[i]);  
         }
-        return totalVal;
+        return totalVal;  
     }
 
 
@@ -178,11 +178,11 @@ public class SentimentAnalyzer {
      * relative to the total number of words in reviews at this rating.
      */
     public float pWordRating(String[] inputTextArray, float rating) {
-        float totalVal = 1;
+        float totalVal = 1;  
         for (int i = 0; i < inputTextArray.length; i++) {
-            totalVal *= wordRating(rating, inputTextArray[i]);
+            totalVal *= wordRating(rating, inputTextArray[i]);  
         }
-        return totalVal;
+        return totalVal;  
     }
 
     /**
@@ -193,13 +193,13 @@ public class SentimentAnalyzer {
      * @return P(word) = number of occurrences of word in relation to total number of words in file.
      */
     public float wordProb(String word) {
-        float count = 0;
+        float count = 0;  
 
         for (int i = 0; i < bagOfWords.size(); i++) {
-            Map<String, Float> currentMap = bagOfWords.get(i);
+            Map<String, Float> currentMap = bagOfWords.get(i);  
             for (Map.Entry<String, Float> entry : currentMap.entrySet()) {
                 if (currentMap.containsKey(word)) {
-                    count = entry.getValue();
+                    count = entry.getValue();  
                 }
             }
         }
@@ -216,21 +216,21 @@ public class SentimentAnalyzer {
      * number of words in reviews at this rating.
      */
     public float wordRating(float rating, String word) {
-        int index = (int) (2 * (rating - 1));
-        Map<String, Float> currentRatingMap = bagOfWords.get(index);
-        float count;
-        float totalCount = 0F;
+        int index = (int) (2 * (rating - 1));  
+        Map<String, Float> currentRatingMap = bagOfWords.get(index);  
+        float count;  
+        float totalCount = 0F;  
         for (float vals : currentRatingMap.values()) {
-            totalCount += vals;
+            totalCount += vals;  
         }
 
         if (currentRatingMap.containsKey(word)) {
-            count = currentRatingMap.get(word) + 1;
+            count = currentRatingMap.get(word) + 1;  
         } else {
-            count = 1;
-            totalCount += 1;
+            count = 1;  
+            totalCount += 1;  
         }
-        return count / totalCount;
+        return count / totalCount;  
     }
 
     /**
@@ -242,11 +242,11 @@ public class SentimentAnalyzer {
      */
     private void addToHashMap(String[] inputArray, Map<String, Float> inputMap) {
         for (int i = 0; i < inputArray.length; i++) {
-            String currentWord = inputArray[i];
+            String currentWord = inputArray[i];  
             if (inputMap.containsKey(currentWord)) {
-                inputMap.put(currentWord, inputMap.get(currentWord) + 1);
+                inputMap.put(currentWord, inputMap.get(currentWord) + 1);  
             } else {
-                inputMap.put(currentWord, 1F);
+                inputMap.put(currentWord, 1F);  
             }
         }
     }
@@ -258,8 +258,8 @@ public class SentimentAnalyzer {
      * @return An array with all 1-gram words within line.
      */
     private String[] getReview(String line) {
-        String[] reviewArray = NGrams.getWords(line.substring(6));
-        return reviewArray;
+        String[] reviewArray = NGrams.getWords(line.substring(6));  
+        return reviewArray;  
     }
 }
 

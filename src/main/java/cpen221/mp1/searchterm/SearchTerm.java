@@ -87,5 +87,4 @@ public class SearchTerm implements Comparable<SearchTerm> {
             return false;
         }
     }
-
 }

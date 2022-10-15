@@ -28,7 +28,7 @@ public class    DataAnalyzer {
             DataWrapper dw = new DataWrapper(filename);
             List<SearchTerm> stList = new ArrayList<>();
             for (String line = dw.nextLine(); line != null; line = dw.nextLine()) {
-                line.trim();
+                line = line.trim();
                 String[] lineComponents = line.split("\t", 2);
                 SearchTerm st = new SearchTerm(lineComponents[1], Integer.parseInt(lineComponents[0].trim()));
                 stList.add(st);

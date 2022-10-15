@@ -105,7 +105,7 @@ public class DataAnalyzer {
      * @param line
      * @return the rating of the progessor as an integer
      */
-    public double getRating(String line) {
+    public static double getRating(String line) {
         String[] lineArray = NGrams.getWords(line);
         double rating = Double.parseDouble(lineArray[0]);
         return rating;

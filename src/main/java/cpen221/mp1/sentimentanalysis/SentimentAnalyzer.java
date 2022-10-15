@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.text.BreakIterator;
 import java.util.*;
 import cpen221.mp1.ngrams.NGrams;
+import cpen221.mp1.ratemyprofessor.DataAnalyzer;
 
 public class SentimentAnalyzer {
 
@@ -51,7 +52,7 @@ public class SentimentAnalyzer {
                         stringList.add(nextLine);
                         String[] review = getReview(nextLine);
                         totalWords += review.length;
-                        float rating = getRating(nextLine);
+                        float rating = (float) DataAnalyzer.getRating(nextLine);
                         ratingList.add(rating);
                         if (rating == 1F) {
                                 addToHashMap(review, rating1);
@@ -87,8 +88,9 @@ public class SentimentAnalyzer {
 
         /**
          * Obtain a float value representing the predicted rating
+         *
          * @param reviewText
-         * @return a float value representing the predicted rating
+         * @return the predicted rating
          */
         public float getPredictedRating(String reviewText) {
                 String[] reviewTextArray = NGrams.getWords(reviewText);
@@ -115,10 +117,12 @@ public class SentimentAnalyzer {
 
 
         /**
-         *
-         * @param inputRating which is a value in the set {1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0}
-         * @return float value representing the number of occurrences of a given rating in a file
+         * Obtain float value represent the number of occurrences of a given rating in a file
          * relative to the total number of reviews
+         *
+         * @param inputRating, a float value in the set {1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0}
+         * @return number of occurrences of a given rating in a file relative to the total number of reviews
+         *
          */
         public float PRating (float inputRating) {
                 float totalReviews = ratingList.size();
@@ -127,11 +131,12 @@ public class SentimentAnalyzer {
         }
 
         /**
-         * Obtain a float
-         * @param
-         * @return float value representing P(bag-of-words) for all words in String[] array
+         * Obtain a float value representing P(bag-of-words)
+         *
+         * @param inputTextArray, a String[] array representing the 1-gram words in the file line
+         * @return P(bag-of-words) = the product of all P(word) = number of occurrences of word relative
+         * to the number of words in file
          */
-        //returns the product of all 1-gram words possibilities
         public float PBagOfWords (String[] inputTextArray) {
                 float totalVal = 1;
                 for (int i = 0; i < inputTextArray.length; i++) {
@@ -140,7 +145,15 @@ public class SentimentAnalyzer {
                 return totalVal;
         }
 
-        //returns the product of all word|rating
+        /**
+         * Obtain a float value representing the P(bag-of-words|rating) = the number of occurrences of a word in rating
+         * relative to the total number of words in reviews at this rating
+         *
+         * @param inputTextArray, a String[] array representing the 1-gram words in the file line
+         * @param rating, a float value in the set {1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0}
+         * @return P(bag-of-words|rating) = the number of occurrences of a word in rating
+         * relative to the total number of words in reviews at this rating
+         */
         public float PWordRating (String[] inputTextArray, float rating) {
                 float totalVal = 1;
                 for(int i = 0; i < inputTextArray.length; i++) {
@@ -149,7 +162,13 @@ public class SentimentAnalyzer {
                 return totalVal;
         }
 
-        //returns (# of given word in file)/(# of total words in file)
+        /**
+         * Obtain a float value representing
+         * the P(word) = number of occurrences of word in relation to total number of words in file
+         *
+         * @param word, a String value representing the word to scan for in file
+         * @return P(word) = number of occurrences of word in relation to total number of words in file
+         */
         public float wordProb (String word) {
                 float count = 0;
 
@@ -162,13 +181,18 @@ public class SentimentAnalyzer {
                         }
                 }
 
-                if (count == 0.0) {
-                        count = 1;
-                }
-
                 return count/totalWords;
         }
 
+
+        /**
+         * Obtain a float value representing the number of occurrences of word in a single rating in relation to the total
+         * number of words in reviews at this rating
+         *
+         * @param
+         * @return P(word|rating) = number of occurrences of word in a single rating in relation to the total
+         * number of words in reviews at this rating
+         */
        //Returns (# of occurrences of word in a given rating)/(total # of words in the reviews with given rating)
        public float wordRating (float rating, String word) {
                int index = (int) (2*(rating - 1));
@@ -200,12 +224,6 @@ public class SentimentAnalyzer {
                         }
                 }
 
-        }
-
-        private float getRating(String line) {
-                String[] lineArray = NGrams.getWords(line);
-                float rating = Float.parseFloat(lineArray[0]);
-                return rating;
         }
 
         private String[] getReview(String line) {

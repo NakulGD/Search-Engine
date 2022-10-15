@@ -16,7 +16,7 @@ import java.util.List;
    the different components of the dataset.
  */
 
-public class    DataAnalyzer {
+public class DataAnalyzer {
 
     private static final String CITIES_DATA = "data/cities.txt";
     private SearchTerm[] searchTerms;
@@ -41,7 +41,7 @@ public class    DataAnalyzer {
     }
 
     public SearchTerm[] getSearchTerms() {
-        return searchTerms; // careful here!
+        return searchTerms;
     }
 
     public static void main(String[] args) {
